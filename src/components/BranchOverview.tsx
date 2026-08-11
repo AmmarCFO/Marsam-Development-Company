@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, Building2, Phone, Maximize2, X, ChevronRight, ChevronLeft, CheckCircle2 } from 'lucide-react';
 import { BranchDetails } from '../types';
+import { handleImageError } from '../constants/images';
 
 interface BranchOverviewProps {
   isAr: boolean;
@@ -205,13 +206,11 @@ export const BranchOverview: React.FC<BranchOverviewProps> = ({
                 exit={{ opacity: 0.8 }}
                 transition={{ duration: 0.3 }}
                 src={selectedBranch.photos[activePhotoIndex]}
-                alt={`${selectedBranch.name.en} photo ${activePhotoIndex + 1}`}
+                alt={`${selectedBranch.name[isAr ? 'ar' : 'en']} - Photo ${activePhotoIndex + 1}`}
                 className="w-full h-full object-cover cursor-pointer"
                 referrerPolicy="no-referrer"
-                onError={(e) => {
-                  // Fallback image if needed
-                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80';
-                }}
+                loading="lazy"
+                onError={handleImageError}
                 onClick={() => setLightboxOpen(true)}
               />
             </AnimatePresence>
@@ -262,12 +261,11 @@ export const BranchOverview: React.FC<BranchOverviewProps> = ({
               >
                 <img
                   src={photo}
-                  alt={`Thumbnail ${index + 1}`}
+                  alt={`${selectedBranch.name[isAr ? 'ar' : 'en']} thumbnail ${index + 1}`}
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80';
-                  }}
+                  loading="lazy"
+                  onError={handleImageError}
                 />
               </motion.button>
             ))}
@@ -300,12 +298,11 @@ export const BranchOverview: React.FC<BranchOverviewProps> = ({
             >
               <img
                 src={selectedBranch.photos[activePhotoIndex]}
-                alt="Enlarged Branch View"
+                alt={`${selectedBranch.name[isAr ? 'ar' : 'en']} enlarged view ${activePhotoIndex + 1}`}
                 className="w-full h-full object-contain bg-black"
                 referrerPolicy="no-referrer"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80';
-                }}
+                loading="lazy"
+                onError={handleImageError}
               />
 
               <button

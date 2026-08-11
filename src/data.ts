@@ -1,4 +1,5 @@
 import { OwnerProfile, BranchDetails, OperatingReport } from './types';
+import { IMAGES } from './constants/images';
 
 export const logoUrl = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69732f9a6a14d6634b2cbd49/e37995eab_mathwa_logo-removebg-preview.png";
 
@@ -45,13 +46,7 @@ export const branchesList: BranchDetails[] = [
       ar: "حي السهمان، الرياض، المملكة العربية السعودية",
       en: "Al-Sahman District, Riyadh, Kingdom of Saudi Arabia"
     },
-    photos: [
-      "/branch-1.jpg",
-      "/branch-2.jpg",
-      "/branch-3.jpg",
-      "/branch-4.jpg",
-      "/branch-5.jpg"
-    ],
+    photos: IMAGES.all,
     totalUnits: 3,
     unitBreakdown: [
       { type: { ar: "شقق سكنية مفروشة فاخرة", en: "Luxury Furnished Residential Units" }, count: 3, avgMonthlyRate: "4,388.62 SAR" }

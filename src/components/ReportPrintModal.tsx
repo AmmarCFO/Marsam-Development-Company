@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, Printer } from 'lucide-react';
 import { OperatingReport } from '../types';
 import { ownerProfile, logoUrl } from '../data';
+import { handleImageError } from '../constants/images';
 
 interface ReportPrintModalProps {
   isAr: boolean;
@@ -59,7 +60,14 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
             <div className="flex items-start justify-between border-b-2 border-[#1d1d1f] pb-6">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-2xl bg-[#FAF7F2] p-2 border border-[#EDE5DC]">
-                  <img src={logoUrl} alt="Mathwaa" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                  <img 
+                    src={logoUrl} 
+                    alt="Mathwaa Hospitality Logo" 
+                    className="w-full h-full object-contain" 
+                    referrerPolicy="no-referrer" 
+                    loading="lazy"
+                    onError={handleImageError}
+                  />
                 </div>
                 <div>
                   <h1 className="text-xl font-extrabold text-[#1d1d1f]">

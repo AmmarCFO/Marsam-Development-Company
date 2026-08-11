@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Globe, Building2, LayoutDashboard, BarChart3, Printer } from 'lucide-react';
 import { logoUrl, ownerProfile } from '../data';
+import { handleImageError } from '../constants/images';
 import { ViewTab } from '../types';
 
 interface HeaderProps {
@@ -36,7 +37,14 @@ export const Header: React.FC<HeaderProps> = ({
               className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-[#B8865F]/30 to-[#C89565]/30 blur-md pointer-events-none"
             />
             <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#FAF7F2] p-1.5 flex items-center justify-center border border-[#EDE5DC] shadow-xs group-hover:border-[#C89565] transition">
-              <img src={logoUrl} alt="Mathwaa Logo" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+              <img 
+                src={logoUrl} 
+                alt="Mathwaa Brand Logo" 
+                className="w-full h-full object-contain" 
+                referrerPolicy="no-referrer" 
+                loading="lazy"
+                onError={handleImageError}
+              />
             </div>
           </div>
           <div>
