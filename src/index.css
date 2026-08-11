@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Cairo', 'Poppins', sans-serif;
+    background-color: #FAF7F2;
+    color: #1d1d1f;
+  }
+}
+
+:lang(en) {
+  font-family: 'Poppins', 'Cairo', sans-serif;
+}
+:lang(ar) {
+  font-family: 'Cairo', 'Poppins', sans-serif;
+}
+

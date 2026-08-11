@@ -1,0 +1,8 @@
+{
+  "name": "Marsam Development Company",
+  "description": "Report for Marsam Real Estate Development Company",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
