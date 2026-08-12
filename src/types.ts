@@ -53,6 +53,26 @@ export interface RevenueCategory {
   percentage: number;
 }
 
+export interface MonthlyOccupancy {
+  monthKey: string; // e.g. "2026-04"
+  monthName: LocalizedString; // "أبريل 2026" / "April 2026"
+  occupancyRate: number; // e.g. 38
+  studioRate?: number;
+  twoBedRate?: number;
+  threeBedRate?: number;
+}
+
+export interface UnitDetailReport {
+  id: string;
+  unitNumber: string; // "1", "2", "3"
+  unitName: LocalizedString; // "استوديو" / "Studio", "غرفتان نوم" / "2BR", "ثلاث غرف نوم" / "3BR"
+  occupancyRate: number;
+  periodRevenue: number;
+  collectedRevenue: number;
+  operatorShare: number;
+  netToOwner: number;
+}
+
 export interface OperatingReport {
   id: string;
   reportNumber: string; // e.g. "REP-01" or "1"
@@ -73,9 +93,13 @@ export interface OperatingReport {
   avgMonthlyReturn?: number; // 7026.27
   directExpenses?: number; // 727.76
   capitalExpenses?: number; // 0.00
-  operatorSharePercentage: number; // 25%
-  operatorShareAmount: number; // 5056.47
-  netToOwner: number; // 14441.67
+  operatorSharePercentage: number; // 20%
+  operatorShareAmount: number; // 4756.79
+  netToOwner: number; // 17734.27
+
+  // Unit-level breakdown & Monthly trend
+  unitReports?: UnitDetailReport[];
+  monthlyOccupancyTrend?: MonthlyOccupancy[];
 
   // Rich Breakdown
   totalUnits: number; // 3

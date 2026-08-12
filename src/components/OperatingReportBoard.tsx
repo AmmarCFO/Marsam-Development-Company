@@ -1,535 +1,419 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React from 'react';
+import { motion } from 'motion/react';
 import { 
-  ChevronDown, ChevronUp, TrendingUp, Building2, 
-  FileText, CheckCircle2, Printer, 
-  Send, Filter, CreditCard
+  TrendingUp, Printer, Home, Layers,
+  BarChart3, CheckCircle2
 } from 'lucide-react';
+import { 
+  ResponsiveContainer, AreaChart, Area, XAxis, YAxis, 
+  Tooltip, CartesianGrid, Legend
+} from 'recharts';
 import { OperatingReport } from '../types';
 
 interface OperatingReportBoardProps {
   isAr: boolean;
   reports: OperatingReport[];
-  onAddOwnerNote: (reportId: string, noteText: string) => void;
   onSelectPrintReport: (report: OperatingReport) => void;
 }
 
 export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
   isAr,
   reports,
-  onAddOwnerNote,
   onSelectPrintReport
 }) => {
-  // Store expanded report IDs (open by default)
-  const [expandedReportIds, setExpandedReportIds] = useState<string[]>(
-    reports.map((r) => r.id)
-  );
-  
-  // Filter state
-  const [selectedFilter, setSelectedFilter] = useState<'all' | '2026' | '2025'>('all');
-  
-  // Owner note state per report
-  const [ownerNoteInputs, setOwnerNoteInputs] = useState<{ [key: string]: string }>({});
+  const report = reports[0];
+  if (!report) return null;
 
-  const toggleExpandReport = (id: string) => {
-    setExpandedReportIds((prev) =>
-      prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]
-    );
-  };
+  const clientNameText = report.clientName 
+    ? report.clientName[isAr ? 'ar' : 'en'] 
+    : (isAr ? 'شركة مرسم للتطوير العقاري' : 'Marsam Real Estate Development Company');
+  const branchNumberText = report.branchNumber || '55';
+  const branchLocationText = isAr ? 'المدينة المنورة - بني حارثة' : 'Madinah - Bani Harithah';
 
-  const filteredReports = reports.filter((rep) => {
-    if (selectedFilter === '2026') return rep.year === 2026;
-    if (selectedFilter === '2025') return rep.year === 2025;
-    return true;
-  });
-
-  const handleNoteSubmit = (reportId: string) => {
-    const text = ownerNoteInputs[reportId];
-    if (text && text.trim().length > 0) {
-      onAddOwnerNote(reportId, text.trim());
-      setOwnerNoteInputs((prev) => ({ ...prev, [reportId]: '' }));
-    }
-  };
+  // Format trend chart data for recharts
+  const chartData = (report.monthlyOccupancyTrend || []).map((item) => ({
+    name: item.monthName[isAr ? 'ar' : 'en'],
+    [isAr ? 'المتوسط العام' : 'Overall Average']: item.occupancyRate,
+    [isAr ? 'استوديو (Studio)' : 'Studio']: item.studioRate || 0,
+    [isAr ? 'غرفتان نوم (2BR)' : '2BR']: item.twoBedRate || 0,
+    [isAr ? 'ثلاث غرف نوم (3BR)' : '3BR']: item.threeBedRate || 0,
+  }));
 
   return (
-    <div className="space-y-6">
-      {/* Board Header & Filter Control Bar */}
+    <div className="space-y-6 sm:space-y-8 my-4 sm:my-6">
       <motion.div
         initial={{ opacity: 0, y: 15 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-40px' }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="bg-white rounded-3xl p-6 border border-[#EDE5DC] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative overflow-hidden group"
+        className="bg-white rounded-3xl p-4 sm:p-6 lg:p-8 border border-[#EDE5DC] shadow-xs space-y-8 sm:space-y-10"
       >
-        {/* Continuous Light Sweep Animation across Header */}
-        <motion.div
-          animate={{ x: ['-100%', '200%'] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-          className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-[#C89565]/15 to-transparent skew-x-12 pointer-events-none"
-        />
-
-        <div className="relative z-10">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-[#8B6F47] uppercase tracking-wider bg-[#B8865F]/15 px-3 py-0.5 rounded-full border border-[#C89565]/30 flex items-center gap-1.5 shadow-xs">
-              <motion.span
-                animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="w-2 h-2 rounded-full bg-[#B8865F]"
-              />
-              {isAr ? 'سجل التقارير التشغيلية المعتمدة' : 'Audited Reports Board'}
-            </span>
-            <span className="text-xs font-mono font-bold text-stone-500">
-              ({filteredReports.length} {isAr ? 'تقارير' : 'reports'})
-            </span>
+        {/* Main Document Header & Print Action */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#EDE5DC] pb-5 sm:pb-6">
+          <div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-bold text-[#8B6F47] uppercase tracking-wider bg-[#B8865F]/15 px-3 py-1 rounded-full border border-[#C89565]/30">
+                {isAr ? 'التقرير التشغيلي الرسمي' : 'Official Operating Report'}
+              </span>
+              <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                {isAr ? '٣ وحدات سكنية' : '3 Residential Units'}
+              </span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#1d1d1f] mt-2">
+              {isAr ? 'تقرير الأداء التشغيلي والمالي (فرع ٥٥)' : 'Branch 55 Operating & Financial Performance'}
+            </h2>
+            <p className="text-xs text-stone-500 mt-1">
+              {report.periodName[isAr ? 'ar' : 'en']} • {clientNameText}
+            </p>
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-[#1d1d1f] mt-1">
-            {isAr ? 'لوحة تقارير أداء العقار التشغيلية' : 'Property Operating Performance Board'}
-          </h2>
-          <p className="text-xs text-stone-500 mt-0.5">
-            {isAr
-              ? 'مرجع دائم لمراجعة أداء العقار والتوزيعات المالية للمالك.'
-              : 'Permanent operational reference for property performance and payouts.'}
-          </p>
+
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => onSelectPrintReport(report)}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 text-xs font-bold text-white bg-[#1d1d1f] hover:bg-[#2d2d2f] active:bg-[#3d3d3f] px-4 py-3 rounded-xl transition shadow-xs min-h-[44px]"
+          >
+            <Printer className="w-4 h-4 text-[#C89565]" />
+            <span>{isAr ? 'طباعة التقرير / PDF' : 'Print Report / PDF'}</span>
+          </motion.button>
         </div>
 
-        {/* Filter Controls */}
-        <div className="flex items-center gap-2 flex-wrap w-full md:w-auto justify-end relative z-10">
-          <div className="flex items-center bg-[#FAF7F2] p-1 rounded-2xl border border-[#EDE5DC] text-xs font-bold text-[#8B6F47]">
-            <span className="px-2.5 flex items-center gap-1 text-stone-400">
-              <Filter className="w-3.5 h-3.5" />
-            </span>
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setSelectedFilter('all')}
-              className={`px-3.5 py-1.5 rounded-xl transition-all ${
-                selectedFilter === 'all' ? 'bg-[#1d1d1f] text-white shadow-xs' : 'hover:text-[#1d1d1f]'
-              }`}
-            >
-              {isAr ? 'الكل' : 'All'}
-            </motion.button>
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setSelectedFilter('2026')}
-              className={`px-3.5 py-1.5 rounded-xl transition-all ${
-                selectedFilter === '2026' ? 'bg-[#1d1d1f] text-white shadow-xs' : 'hover:text-[#1d1d1f]'
-              }`}
-            >
-              2026
-            </motion.button>
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setSelectedFilter('2025')}
-              className={`px-3.5 py-1.5 rounded-xl transition-all ${
-                selectedFilter === '2025' ? 'bg-[#1d1d1f] text-white shadow-xs' : 'hover:text-[#1d1d1f]'
-              }`}
-            >
-              2025
-            </motion.button>
+        {/* SECTION 1: FINANCIAL SUMMARY */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-2.5 border-b border-[#EDE5DC] pb-3">
+            <div className="w-8 h-8 rounded-xl bg-[#B8865F]/15 border border-[#C89565]/30 flex items-center justify-center text-[#8B6F47] flex-shrink-0">
+              <Layers className="w-4 h-4 text-[#B8865F]" />
+            </div>
+            <div>
+              <h3 className="text-base sm:text-lg font-extrabold text-[#1d1d1f]">
+                {isAr ? 'الملخص المالي العام' : 'Financial Summary'}
+              </h3>
+              <p className="text-xs text-stone-500">
+                {isAr ? 'المؤشرات الرئيسية التسعة لأداء الفرع' : 'Core financial and operating key metrics for Branch 55'}
+              </p>
+            </div>
           </div>
-        </div>
-      </motion.div>
 
-      {/* Reports Board Stack */}
-      <div className="space-y-4">
-        {filteredReports.map((report, index) => {
-          const isExpanded = expandedReportIds.includes(report.id);
-          const periodTitle = report.periodName[isAr ? 'ar' : 'en'];
-          const branchTitle = report.branchName[isAr ? 'ar' : 'en'];
-          const notesText = report.notes[isAr ? 'ar' : 'en'];
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 pt-1">
+            {/* 1. Client Name */}
+            <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EDE5DC]">
+              <span className="text-xs font-bold text-stone-500 block mb-1">
+                • {isAr ? 'اسم العميل' : 'Client Name'}
+              </span>
+              <p className="text-sm sm:text-base font-extrabold text-[#1d1d1f]">
+                {clientNameText}
+              </p>
+            </div>
 
-          return (
-            <motion.div
-              key={report.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-30px' }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              whileHover={{ y: -2 }}
-              className={`bg-white rounded-3xl border transition-all duration-300 shadow-xs overflow-hidden relative ${
-                isExpanded
-                  ? 'border-[#B8865F] ring-1 ring-[#B8865F]/40 shadow-md'
-                  : 'border-[#EDE5DC] hover:border-[#C89565]/80 hover:shadow-md'
-              }`}
-            >
-              {/* Card Header Bar */}
-              <div
-                onClick={() => toggleExpandReport(report.id)}
-                className="p-5 sm:p-6 bg-[#FAF7F2]/80 hover:bg-[#FAF7F2] cursor-pointer transition flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[#EDE5DC]"
+            {/* 2. Branch Number */}
+            <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EDE5DC]">
+              <span className="text-xs font-bold text-stone-500 block mb-1">
+                • {isAr ? 'رقم الفرع' : 'Branch Number'}
+              </span>
+              <p className="text-lg font-black text-[#1d1d1f]">
+                #{branchNumberText}
+              </p>
+            </div>
+
+            {/* 3. Branch Location */}
+            <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EDE5DC]">
+              <span className="text-xs font-bold text-stone-500 block mb-1">
+                • {isAr ? 'موقع الفرع' : 'Branch Location'}
+              </span>
+              <p className="text-sm sm:text-base font-bold text-[#1d1d1f]">
+                {branchLocationText}
+              </p>
+            </div>
+
+            {/* 4. Occupancy Rate */}
+            <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EDE5DC]">
+              <span className="text-xs font-bold text-stone-500 block mb-1">
+                • {isAr ? 'نسبة الإشغال الكلية' : 'Overall Occupancy Rate'}
+              </span>
+              <p className="text-xl font-black text-emerald-600 flex items-center gap-1.5">
+                <TrendingUp className="w-4 h-4 text-emerald-500" />
+                <span>{report.occupancyRate}%</span>
+              </p>
+            </div>
+
+            {/* 5. Period Revenue */}
+            <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EDE5DC]">
+              <span className="text-xs font-bold text-stone-500 block mb-1">
+                • {isAr ? 'إيراد الفترة' : 'Period Revenue'}
+              </span>
+              <p className="text-lg sm:text-xl font-black text-[#1d1d1f]">
+                {(report.totalContracts || 23783.99).toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
+              </p>
+            </div>
+
+            {/* 6. Collected Revenue */}
+            <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EDE5DC]">
+              <span className="text-xs font-bold text-stone-500 block mb-1">
+                • {isAr ? 'الإيراد المحصل' : 'Collected Revenue'}
+              </span>
+              <p className="text-lg sm:text-xl font-black text-emerald-700">
+                {report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
+              </p>
+            </div>
+
+            {/* 7. Operator's Share */}
+            <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EDE5DC]">
+              <span className="text-xs font-bold text-stone-500 block mb-1">
+                • {isAr ? `حصة المشغل (${report.operatorSharePercentage}%)` : `Operator's Share (${report.operatorSharePercentage}%)`}
+              </span>
+              <p className="text-lg sm:text-xl font-black text-amber-900">
+                {report.operatorShareAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
+              </p>
+            </div>
+
+            {/* 8. Capital Expenditures */}
+            <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EDE5DC]">
+              <span className="text-xs font-bold text-stone-500 block mb-1">
+                • {isAr ? 'المصاريف الرأسمالية' : 'Capital Expenditures'}
+              </span>
+              <p className="text-lg sm:text-xl font-extrabold text-stone-600">
+                {(report.capitalExpenses || 0).toFixed(2)} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
+              </p>
+            </div>
+
+            {/* 9. Net Amount for the Owner */}
+            <div className="bg-gradient-to-br from-[#1d1d1f] via-[#2a2622] to-[#121110] text-white p-4 sm:p-5 rounded-2xl border border-[#C89565]/80 shadow-md sm:col-span-2 lg:col-span-1">
+              <span className="text-xs font-extrabold text-[#E0C9B1] block mb-1">
+                • {isAr ? 'الصافي للمالك' : 'Net Amount for the Owner'}
+              </span>
+              <p className="text-xl sm:text-2xl font-black text-[#F3E5D8]">
+                {report.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-bold text-[#C89565]">{isAr ? 'ريال' : 'SAR'}</span>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 2: SEGREGATED 3 UNITS BREAKDOWN */}
+        <section className="space-y-5 pt-4 border-t border-[#EDE5DC]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#EDE5DC] pb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-[#B8865F]/15 border border-[#C89565]/30 flex items-center justify-center text-[#8B6F47] flex-shrink-0">
+                <Home className="w-4 h-4 text-[#B8865F]" />
+              </div>
+              <div>
+                <h3 className="text-base sm:text-lg font-extrabold text-[#1d1d1f]">
+                  {isAr ? 'تفاصيل الوحدات الـ ٣ (Studio, 2BR, 3BR)' : 'Segregated 3 Units Breakdown'}
+                </h3>
+                <p className="text-xs text-stone-500">
+                  {isAr ? 'توزيع الإيراد والإشغال والعائد لكل وحدة سكنية' : 'Detailed revenue, occupancy, and net return breakdown per unit'}
+                </p>
+              </div>
+            </div>
+            <span className="self-start sm:self-auto text-[11px] font-mono font-bold text-[#8B6F47] bg-[#FAF7F2] px-3 py-1 rounded-full border border-[#EDE5DC]">
+              {isAr ? 'إجمالي المحفظة: ٣ وحدات' : '3 Units Portfolio'}
+            </span>
+          </div>
+
+          {/* 3 Unit Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {(report.unitReports || []).map((u) => (
+              <div 
+                key={u.id}
+                className="bg-[#FAF7F2] rounded-2xl p-4 sm:p-5 border border-[#EDE5DC] space-y-3.5 hover:border-[#B8865F] transition shadow-2xs"
               >
-                {/* Left: Report Number & Period Title */}
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <motion.div
-                    whileHover={{ scale: 1.05, rotate: 2 }}
-                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#1d1d1f] text-[#E0C9B1] font-black text-xs sm:text-sm flex flex-col items-center justify-center shadow-xs flex-shrink-0 border border-[#B8865F]/30"
-                  >
-                    <span className="text-[10px] text-stone-400 font-mono">#</span>
-                    <span>{report.reportNumber.replace('REP-', '')}</span>
-                  </motion.div>
+                <div className="flex items-center justify-between border-b border-[#EDE5DC] pb-2">
+                  <span className="text-xs font-extrabold text-[#8B6F47] bg-[#B8865F]/15 px-2.5 py-0.5 rounded-full border border-[#C89565]/30">
+                    {isAr ? `وحدة رقم ${u.unitNumber}` : `Unit #${u.unitNumber}`}
+                  </span>
+                  <span className="text-xs font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200">
+                    {u.occupancyRate}% {isAr ? 'إشغال' : 'Occupancy'}
+                  </span>
+                </div>
 
-                  <div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-xs font-mono font-bold bg-[#B8865F]/20 text-[#8B6F47] px-2.5 py-0.5 rounded-full border border-[#C89565]/30">
-                        {report.reportNumber}
-                      </span>
-                      <span className="text-xs font-semibold text-stone-500 flex items-center gap-1">
-                        <Building2 className="w-3.5 h-3.5 text-[#B8865F]" />
-                        {branchTitle}
-                      </span>
-                      <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1.5">
-                        <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                        </span>
-                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                        {isAr ? 'تم تحويل الأرباح' : 'Payout Transferred'}
-                      </span>
-                    </div>
+                <h4 className="text-sm sm:text-base font-extrabold text-[#1d1d1f]">
+                  {u.unitName[isAr ? 'ar' : 'en']}
+                </h4>
 
-                    <h3 className="text-lg sm:text-xl font-extrabold text-[#1d1d1f] mt-0.5">
-                      {periodTitle} <span className="text-stone-400 font-normal text-sm">({report.quarter})</span>
-                    </h3>
+                <div className="space-y-2 text-xs">
+                  <div className="flex justify-between items-center py-1 border-b border-stone-200/60">
+                    <span className="text-stone-500 font-medium">• {isAr ? 'إيراد الفترة' : 'Period Revenue'}:</span>
+                    <span className="font-extrabold text-[#1d1d1f]">{u.periodRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</span>
+                  </div>
+
+                  <div className="flex justify-between items-center py-1 border-b border-stone-200/60">
+                    <span className="text-stone-500 font-medium">• {isAr ? 'الإيراد المحصل' : 'Collected Revenue'}:</span>
+                    <span className="font-extrabold text-emerald-700">{u.collectedRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</span>
+                  </div>
+
+                  <div className="flex justify-between items-center py-1 border-b border-stone-200/60">
+                    <span className="text-stone-500 font-medium">• {isAr ? 'حصة المشغل (20%)' : "Operator's Share (20%)"}:</span>
+                    <span className="font-extrabold text-amber-900">{u.operatorShare.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</span>
+                  </div>
+
+                  <div className="flex justify-between items-center pt-2 text-xs sm:text-sm font-black text-[#1d1d1f]">
+                    <span className="text-[#8B6F47]">• {isAr ? 'الصافي للمالك' : 'Net to Owner'}:</span>
+                    <span className="text-[#B8865F]">{u.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</span>
                   </div>
                 </div>
-
-                {/* Center / Right: Mandatory KPI Chips */}
-                <div className="flex items-center gap-2 sm:gap-4 flex-wrap lg:flex-nowrap">
-                  {/* Occupancy Rate */}
-                  <motion.div
-                    whileHover={{ scale: 1.04 }}
-                    className="bg-white px-3.5 py-2 rounded-2xl border border-[#EDE5DC] text-center min-w-[90px] shadow-2xs"
-                  >
-                    <span className="text-[10px] font-bold text-stone-500 uppercase block">
-                      {isAr ? 'نسبة الإشغال' : 'Occupancy'}
-                    </span>
-                    <span className="text-sm sm:text-base font-extrabold text-emerald-600 flex items-center justify-center gap-0.5">
-                      <TrendingUp className="w-3.5 h-3.5" />
-                      {report.occupancyRate}%
-                    </span>
-                  </motion.div>
-
-                  {/* Revenue */}
-                  <motion.div
-                    whileHover={{ scale: 1.04 }}
-                    className="bg-white px-3.5 py-2 rounded-2xl border border-[#EDE5DC] text-center min-w-[100px] shadow-2xs"
-                  >
-                    <span className="text-[10px] font-bold text-stone-500 uppercase block">
-                      {isAr ? 'إجمالي الإيرادات' : 'Revenue'}
-                    </span>
-                    <span className="text-sm sm:text-base font-extrabold text-[#1d1d1f]">
-                      {report.totalRevenue.toLocaleString()} <span className="text-[10px] text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
-                    </span>
-                  </motion.div>
-
-                  {/* Operator's Share */}
-                  <motion.div
-                    whileHover={{ scale: 1.04 }}
-                    className="bg-white px-3.5 py-2 rounded-2xl border border-[#EDE5DC] text-center min-w-[100px] shadow-2xs"
-                  >
-                    <span className="text-[10px] font-bold text-stone-500 uppercase block">
-                      {isAr ? `حصة المشغل (${report.operatorSharePercentage}%)` : `Operator (${report.operatorSharePercentage}%)`}
-                    </span>
-                    <span className="text-sm sm:text-base font-bold text-stone-600">
-                      {report.operatorShareAmount.toLocaleString()} <span className="text-[10px] text-stone-400">{isAr ? 'ريال' : 'SAR'}</span>
-                    </span>
-                  </motion.div>
-
-                  {/* Net to Owner - Extreme Glowing Accent Badge */}
-                  <motion.div
-                    whileHover={{ scale: 1.08, y: -2 }}
-                    transition={{ type: 'spring', stiffness: 350, damping: 22 }}
-                    className="bg-gradient-to-br from-[#1d1d1f] via-[#2a2622] to-[#121110] text-white px-4 py-2 rounded-2xl border border-[#C89565]/80 text-center min-w-[130px] shadow-lg relative overflow-hidden group/net"
-                  >
-                    {/* Continuous Moving Shimmer Ray */}
-                    <motion.div
-                      animate={{ x: ['-100%', '200%'] }}
-                      transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-                      className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-[#C89565]/40 to-transparent skew-x-12 pointer-events-none"
-                    />
-                    <motion.div
-                      animate={{ opacity: [0.2, 0.6, 0.2] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="absolute inset-0 bg-[#C89565]/10 blur-md pointer-events-none"
-                    />
-                    <span className="text-[10px] font-extrabold text-[#E0C9B1] uppercase block relative z-10 tracking-wide">
-                      {isAr ? 'الصافي للمالك' : 'Net to Owner'}
-                    </span>
-                    <span className="text-sm sm:text-base font-black text-[#F3E5D8] relative z-10 drop-shadow-xs">
-                      {report.netToOwner.toLocaleString()} <span className="text-[10px] text-[#C89565] font-bold">{isAr ? 'ريال' : 'SAR'}</span>
-                    </span>
-                  </motion.div>
-
-                  {/* Dropdown Toggle Button */}
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleExpandReport(report.id);
-                    }}
-                    className="p-2 rounded-xl bg-white hover:bg-[#FAF7F2] border border-[#EDE5DC] text-[#8B6F47] transition ml-2 shadow-2xs"
-                  >
-                    {isExpanded ? <ChevronUp className="w-5 h-5 text-[#B8865F]" /> : <ChevronDown className="w-5 h-5 text-[#8B6F47]" />}
-                  </motion.button>
-                </div>
               </div>
+            ))}
+          </div>
 
-              {/* Dropdown Expanded Report View */}
-              <AnimatePresence>
-                {isExpanded && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                    className="p-6 sm:p-8 space-y-6 bg-white"
-                  >
-                    {/* Tagline & Owner Metadata Header */}
-                    <div className="bg-gradient-to-r from-[#1d1d1f] via-[#2a2622] to-[#121110] text-white p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border border-[#C89565]/40 shadow-xs relative overflow-hidden">
-                      <motion.div
-                        animate={{ x: ['-100%', '200%'] }}
-                        transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-                        className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-[#C89565]/20 to-transparent skew-x-12 pointer-events-none"
-                      />
-                      <div>
-                        <span className="text-[10px] font-extrabold text-[#C89565] uppercase tracking-widest block">
-                          {isAr ? 'بيانات التقرير والعقار' : 'Property & Report Overview'}
-                        </span>
-                        <h4 className="text-base sm:text-lg font-black text-[#F3E5D8]">
-                          {report.branchName[isAr ? 'ar' : 'en']}
-                        </h4>
-                        <p className="text-xs text-[#E0C9B1] italic font-medium mt-0.5">
-                          "{report.tagline ? report.tagline[isAr ? 'ar' : 'en'] : (isAr ? 'بيتك، راحتك وطمأنينتك' : 'Your home, comfort and peace of mind')}"
-                        </p>
-                      </div>
-                      <div className="text-left sm:text-right">
-                        <span className="text-[11px] text-stone-300 block font-semibold">
-                          {isAr ? 'المالك / العميل:' : 'Owner / Client:'} <span className="text-[#E0C9B1] font-bold">{report.clientName ? report.clientName[isAr ? 'ar' : 'en'] : (isAr ? 'شركة مرسم للتطوير العقاري' : 'Marsam Real Estate Development Company')}</span>
-                        </span>
-                        <span className="text-[11px] text-stone-400 block font-mono mt-0.5">
-                          {isAr ? 'فترة التقرير:' : 'Period:'} {report.periodName[isAr ? 'ar' : 'en']}
-                        </span>
-                      </div>
-                    </div>
+          {/* Mobile Table Scroll Hint */}
+          <div className="text-[11px] text-stone-500 flex items-center justify-between sm:hidden px-1 font-medium">
+            <span>{isAr ? 'جدول المقارنة التفصيلي' : 'Detailed Comparison Table'}</span>
+            <span className="bg-[#FAF7F2] text-[#8B6F47] px-2 py-0.5 rounded-md border border-[#EDE5DC] text-[10px] font-bold">
+              {isAr ? 'اسحب أفقياً 👈👉' : 'Swipe horizontally 👈👉'}
+            </span>
+          </div>
 
-                    {/* Detailed Operating Metrics Grid */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EDE5DC]">
-                        <span className="text-[10px] font-bold text-stone-500 uppercase block">
-                          {isAr ? 'عدد الوحدات / الإشغال' : 'Units / Occupancy'}
-                        </span>
-                        <p className="text-sm sm:text-base font-extrabold text-[#1d1d1f] mt-1">
-                          {report.totalUnits} {isAr ? 'وحدات' : 'Units'} <span className="text-xs font-bold text-emerald-600">({report.occupancyRate}%)</span>
-                        </p>
-                      </div>
+          {/* Structured Segregated Comparison Table */}
+          <div className="overflow-x-auto border border-[#EDE5DC] rounded-2xl touch-pan-x [-webkit-overflow-scrolling:touch]">
+            <table className="w-full text-xs text-right border-collapse min-w-[600px]">
+              <thead>
+                <tr className="bg-[#1d1d1f] text-white">
+                  <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'الوحدة' : 'Unit'}</th>
+                  <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'نوع الوحدة' : 'Unit Type'}</th>
+                  <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'نسبة الإشغال' : 'Occupancy Rate'}</th>
+                  <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'إيراد الفترة' : 'Period Revenue'}</th>
+                  <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'الإيراد المحصل' : 'Collected Revenue'}</th>
+                  <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'حصة المشغل (20%)' : "Operator Share (20%)"}</th>
+                  <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'الصافي للمالك' : 'Net to Owner'}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(report.unitReports || []).map((u, i) => (
+                  <tr key={u.id} className={i % 2 === 0 ? 'bg-white' : 'bg-[#FAF7F2]'}>
+                    <td className="p-3 font-extrabold text-[#1d1d1f]">#{u.unitNumber}</td>
+                    <td className="p-3 font-bold text-[#8B6F47]">{u.unitName[isAr ? 'ar' : 'en']}</td>
+                    <td className="p-3 font-extrabold text-emerald-700">{u.occupancyRate}%</td>
+                    <td className="p-3 font-extrabold text-[#1d1d1f]">{u.periodRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                    <td className="p-3 font-extrabold text-emerald-800">{u.collectedRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                    <td className="p-3 font-extrabold text-amber-900">{u.operatorShare.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                    <td className="p-3 font-black text-[#B8865F]">{u.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                  </tr>
+                ))}
+                <tr className="bg-[#1d1d1f] text-white font-black text-xs">
+                  <td className="p-3">{isAr ? 'الإجمالي' : 'Total'}</td>
+                  <td className="p-3">{isAr ? '٣ وحدات' : '3 Units'}</td>
+                  <td className="p-3 text-emerald-400">{report.occupancyRate}% ({isAr ? 'المتوسط' : 'Avg'})</td>
+                  <td className="p-3 text-white">{(report.totalContracts || 23783.99).toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                  <td className="p-3 text-emerald-300">{report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                  <td className="p-3 text-amber-300">{report.operatorShareAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                  <td className="p-3 text-[#E0C9B1]">{report.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
 
-                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EDE5DC]">
-                        <span className="text-[10px] font-bold text-stone-500 uppercase block">
-                          {isAr ? 'إجمالي العقود المبرمة' : 'Total Contracts'}
-                        </span>
-                        <p className="text-sm sm:text-base font-extrabold text-[#1d1d1f] mt-1">
-                          {(report.totalContracts || 23617.57).toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-[10px] text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
-                        </p>
-                      </div>
+        {/* SECTION 3: OCCUPANCY TREND CHART */}
+        <section className="space-y-4 pt-4 border-t border-[#EDE5DC]">
+          <div className="flex items-center justify-between border-b border-[#EDE5DC] pb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-[#B8865F]/15 border border-[#C89565]/30 flex items-center justify-center text-[#8B6F47] flex-shrink-0">
+                <BarChart3 className="w-4 h-4 text-[#B8865F]" />
+              </div>
+              <div>
+                <h3 className="text-base sm:text-lg font-extrabold text-[#1d1d1f]">
+                  {isAr ? 'مؤشر الإشغال (أبريل - يوليو 2026)' : 'Occupancy Trend (Apr to Jul 2026)'}
+                </h3>
+                <p className="text-xs text-stone-500">
+                  {isAr ? 'تطور الأداء الشهري المعتمد للوحدات الـ ٣' : 'Monthly certified occupancy performance evolution across the 4 months'}
+                </p>
+              </div>
+            </div>
+            <span className="text-xs bg-emerald-100 text-emerald-900 font-bold px-2.5 py-1 rounded-md border border-emerald-200">
+              {isAr ? 'بيانات معتمدة' : 'Verified Data'}
+            </span>
+          </div>
 
-                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EDE5DC]">
-                        <span className="text-[10px] font-bold text-stone-500 uppercase block">
-                          {isAr ? 'إجمالي الإيرادات' : 'Total Revenue'}
-                        </span>
-                        <p className="text-sm sm:text-base font-black text-[#1d1d1f] mt-1">
-                          {report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-[10px] text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
-                        </p>
-                      </div>
+          <div className="bg-[#FAF7F2] p-4 sm:p-6 rounded-2xl border border-[#EDE5DC] space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#EDE5DC] pb-3">
+              <div>
+                <h4 className="text-sm font-extrabold text-[#1d1d1f]">
+                  {isAr ? 'تطور نسبة الإشغال الشهري (أبريل ٢٠٢٦ - يوليو ٢٠٢٦)' : 'Monthly Occupancy Rate Trend (April 2026 - July 2026)'}
+                </h4>
+                <p className="text-xs text-stone-500">
+                  {isAr ? 'مقارنة متوسط المحفظة مع أداء الوحدات الـ ٣ (Studio, 2BR, 3BR)' : 'Portfolio overall average vs Studio, 2BR & 3BR performance'}
+                </p>
+              </div>
+              <div className="text-xs font-bold text-[#8B6F47] bg-[#B8865F]/15 px-3 py-1 rounded-full border border-[#C89565]/30 self-start sm:self-auto">
+                {isAr ? 'متوسط الفترة: ٣٢.٣٪' : 'Period Average: 32.3%'}
+              </div>
+            </div>
 
-                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EDE5DC]">
-                        <span className="text-[10px] font-bold text-stone-500 uppercase block">
-                          {isAr ? 'متوسط العائد الشهري' : 'Avg. Monthly Return'}
-                        </span>
-                        <p className="text-sm sm:text-base font-extrabold text-stone-700 mt-1">
-                          {(report.avgMonthlyReturn || 4388.62).toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-[10px] text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
-                        </p>
-                      </div>
+            {/* Recharts Area/Line Chart optimized for Mobile Viewports */}
+            <div className="h-64 sm:h-80 w-full pt-2">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorOverall" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#B8865F" stopOpacity={0.4}/>
+                      <stop offset="95%" stopColor="#B8865F" stopOpacity={0}/>
+                    </linearGradient>
+                    <linearGradient id="colorStudio" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10B981" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" />
+                  <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#555' }} interval={0} />
+                  <YAxis unit="%" domain={[0, 100]} tick={{ fontSize: 10, fill: '#555' }} />
+                  <Tooltip 
+                    formatter={(val: any) => [`${val}%`, '']}
+                    contentStyle={{ backgroundColor: '#1d1d1f', borderRadius: '12px', color: '#fff', fontSize: '12px', border: 'none', padding: '10px' }}
+                    itemStyle={{ color: '#E0C9B1' }}
+                  />
+                  <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
+                  <Area 
+                    type="monotone" 
+                    dataKey={isAr ? 'المتوسط العام' : 'Overall Average'} 
+                    stroke="#B8865F" 
+                    strokeWidth={3}
+                    fillOpacity={1} 
+                    fill="url(#colorOverall)" 
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey={isAr ? 'استوديو (Studio)' : 'Studio'} 
+                    stroke="#10B981" 
+                    strokeWidth={2}
+                    strokeDasharray="4 4"
+                    fillOpacity={1} 
+                    fill="url(#colorStudio)" 
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey={isAr ? 'غرفتان نوم (2BR)' : '2BR'} 
+                    stroke="#3B82F6" 
+                    strokeWidth={2}
+                    fillOpacity={0} 
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey={isAr ? 'ثلاث غرف نوم (3BR)' : '3BR'} 
+                    stroke="#8B5CF6" 
+                    strokeWidth={2}
+                    fillOpacity={0} 
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
 
-                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EDE5DC]">
-                        <span className="text-[10px] font-bold text-stone-500 uppercase block">
-                          {isAr ? 'المصاريف المباشرة / الرأسمالية' : 'Direct / Capital Exp.'}
-                        </span>
-                        <p className="text-xs sm:text-sm font-bold text-stone-700 mt-1">
-                          <span className="text-amber-800">{(report.directExpenses || 1292.92).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span> / <span className="text-stone-400">{isAr ? '0.00 (لا يوجد)' : 'Nil'}</span>
-                        </p>
-                      </div>
-
-                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EDE5DC]">
-                        <span className="text-[10px] font-bold text-stone-500 uppercase block">
-                          {isAr ? `حصة المشغل (${report.operatorSharePercentage}%)` : `Operator Share (${report.operatorSharePercentage}%)`}
-                        </span>
-                        <p className="text-sm sm:text-base font-extrabold text-stone-700 mt-1">
-                          {report.operatorShareAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-[10px] text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Financial Summary Highlight Banner */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[#FAF7F2] p-5 rounded-2xl border border-[#EDE5DC]">
-                      <div className="space-y-1">
-                        <span className="text-xs font-semibold text-stone-500 block">
-                          {isAr ? 'إجمالي دخل العقار للفترة' : 'Gross Property Revenue'}
-                        </span>
-                        <p className="text-xl font-black text-[#1d1d1f]">
-                          {report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
-                        </p>
-                        <span className="text-[11px] text-stone-500 block">
-                          {isAr ? `تضمن 3 وحدات بـ حي السهمان بنسبة إشغال ${report.occupancyRate}%` : `3 Units in Al-Sahman District at ${report.occupancyRate}% Occupancy`}
-                        </span>
-                      </div>
-
-                      <div className="space-y-1 border-t md:border-t-0 md:border-r md:border-l border-[#EDE5DC] pt-3 md:pt-0 md:px-4">
-                        <span className="text-xs font-semibold text-stone-500 block">
-                          {isAr ? `استقطاع حصة المشغل (${report.operatorSharePercentage}%)` : `Less Operator Share (${report.operatorSharePercentage}%)`}
-                        </span>
-                        <p className="text-xl font-bold text-stone-700">
-                          - {report.operatorShareAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
-                        </p>
-                        <span className="text-[11px] text-emerald-700 font-medium block">
-                          {isAr ? 'شامل الإدارة والتشغيل والحلول العقارية' : 'Includes management, operations & hospitality'}
-                        </span>
-                      </div>
-
-                      <div className="space-y-1 bg-white p-3.5 rounded-xl border border-[#C89565]/60 shadow-xs relative overflow-hidden">
-                        <span className="text-xs font-extrabold text-[#8B6F47] block">
-                          {isAr ? 'صافي العائد المستحق النهائي للمالك' : 'Net Return to Client'}
-                        </span>
-                        <p className="text-2xl font-black text-[#B8865F]">
-                          {report.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-normal text-stone-600">{isAr ? 'ريال' : 'SAR'}</span>
-                        </p>
-                        <span className="text-[11px] text-[#8B6F47] block font-semibold">
-                          {isAr ? 'حالة الحوالة: تم تحويل الصافي المالي بالكامل' : 'Payout Status: Net return transferred in full'}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Revenue Category Breakdown */}
-                    {report.revenueBreakdown && report.revenueBreakdown.length > 0 && (
-                      <div>
-                        <h4 className="text-xs font-bold text-[#8B6F47] uppercase tracking-wider mb-3">
-                          {isAr ? 'تفاصيل مصادر الإيرادات' : 'Revenue Sources'}
-                        </h4>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                          {report.revenueBreakdown.map((rev, rIdx) => (
-                            <motion.div
-                              key={rIdx}
-                              whileHover={{ y: -2 }}
-                              className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EDE5DC] hover:border-[#C89565]/40 flex items-center justify-between transition-all"
-                            >
-                              <div>
-                                <span className="text-xs font-bold text-[#1d1d1f] block">
-                                  {rev.category[isAr ? 'ar' : 'en']}
-                                </span>
-                                <span className="text-[11px] text-stone-500">
-                                  {rev.percentage}% {isAr ? 'من الإجمالي' : 'of gross'}
-                                </span>
-                              </div>
-                              <span className="text-sm font-black text-[#8B6F47]">
-                                {rev.amount.toLocaleString()} {isAr ? 'ريال' : 'SAR'}
-                              </span>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* NOTES FIELD Section */}
-                    <div className="bg-[#FAF7F2] rounded-2xl p-5 border border-[#EDE5DC] space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-[#1d1d1f] font-extrabold text-sm">
-                          <FileText className="w-4 h-4 text-[#B8865F]" />
-                          <span>{isAr ? 'ملاحظات التقرير التشغيلي' : 'Operating Report Notes'}</span>
-                        </div>
-                      </div>
-
-                      <p className="text-sm text-stone-800 leading-relaxed font-medium bg-white p-4 rounded-xl border border-[#EDE5DC] shadow-2xs">
-                        {notesText}
-                      </p>
-
-                      {/* Existing Remarks */}
-                      {report.additionalRemarks && report.additionalRemarks.length > 0 && (
-                        <div className="space-y-2 pt-2">
-                          <span className="text-xs font-bold text-[#8B6F47] block">
-                            {isAr ? 'ملاحظات سابقة:' : 'Previous Remarks:'}
-                          </span>
-                          {report.additionalRemarks.map((rem) => (
-                            <div key={rem.id} className="bg-white p-3 rounded-xl border border-[#EDE5DC] text-xs">
-                              <div className="flex items-center justify-between text-stone-500 font-semibold mb-1">
-                                <span className="text-[#1d1d1f] font-bold">{rem.author}</span>
-                                <span className="font-mono text-[10px]">{rem.date}</span>
-                              </div>
-                              <p className="text-stone-700">{rem.content}</p>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Interactive Add Note Field */}
-                      <div className="pt-2">
-                        <label className="text-xs font-bold text-[#8B6F47] block mb-1.5">
-                          {isAr ? 'إضافة ملاحظة أو استفسار من المالك:' : 'Add Owner Note:'}
-                        </label>
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="text"
-                            value={ownerNoteInputs[report.id] || ''}
-                            onChange={(e) =>
-                              setOwnerNoteInputs((prev) => ({ ...prev, [report.id]: e.target.value }))
-                            }
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') handleNoteSubmit(report.id);
-                            }}
-                            placeholder={
-                              isAr
-                                ? 'أدخل ملاحظتك هنا...'
-                                : 'Type your note or inquiry...'
-                            }
-                            className="flex-1 text-xs bg-white border border-[#EDE5DC] rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[#B8865F] text-[#1d1d1f] transition-colors"
-                          />
-                          <motion.button
-                            whileTap={{ scale: 0.95 }}
-                            whileHover={{ scale: 1.02 }}
-                            onClick={() => handleNoteSubmit(report.id)}
-                            className="bg-[#1d1d1f] hover:bg-[#2d2d2f] text-white px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs"
-                          >
-                            <Send className="w-3.5 h-3.5 text-[#C89565]" />
-                            <span>{isAr ? 'حفظ' : 'Save'}</span>
-                          </motion.button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Report Page Actions */}
-                    <div className="flex items-center justify-between pt-2 border-t border-[#EDE5DC] flex-wrap gap-3">
-                      <div className="flex items-center gap-2 text-xs text-stone-500 font-mono">
-                        <span>{isAr ? 'كود التقرير:' : 'Audit Code:'}</span>
-                        <span className="font-bold text-[#1d1d1f] bg-[#FAF7F2] px-2.5 py-1 rounded-lg border border-[#EDE5DC]">
-                          {report.id}-{report.periodKey}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <motion.button
-                          whileTap={{ scale: 0.95 }}
-                          whileHover={{ scale: 1.02 }}
-                          onClick={() => onSelectPrintReport(report)}
-                          className="flex items-center gap-1.5 text-xs font-bold text-[#1d1d1f] bg-[#FAF7F2] hover:bg-[#F0E8DD] border border-[#EDE5DC] px-4 py-2 rounded-xl transition shadow-2xs"
-                        >
-                          <Printer className="w-3.5 h-3.5 text-[#B8865F]" />
-                          <span>{isAr ? 'معاينة وطباعة التقرير' : 'View Printable Statement'}</span>
-                        </motion.button>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          );
-        })}
-      </div>
+            {/* Monthly Numbers Breakdown Data Grid for reference */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
+              {(report.monthlyOccupancyTrend || []).map((m) => (
+                <div key={m.monthKey} className="bg-white p-3 rounded-xl border border-[#EDE5DC] text-center shadow-2xs">
+                  <span className="text-[11px] font-bold text-stone-500 block">
+                    {m.monthName[isAr ? 'ar' : 'en']}
+                  </span>
+                  <span className="text-base font-black text-[#B8865F] block mt-0.5">
+                    {m.occupancyRate}%
+                  </span>
+                  <span className="text-[10px] text-stone-400 block mt-0.5 font-mono">
+                    S:{m.studioRate}% | 2BR:{m.twoBedRate}% | 3BR:{m.threeBedRate}%
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </motion.div>
     </div>
   );
 };

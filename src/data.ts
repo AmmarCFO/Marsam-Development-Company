@@ -18,33 +18,33 @@ export const ownerProfile: OwnerProfile = {
   contractDate: "2026-04-25",
   totalBranches: 1,
   totalUnits: 3,
-  cumulativeEarnings: 17601.13
+  cumulativeEarnings: 17734.27
 };
 
 export const branchesList: BranchDetails[] = [
   {
     id: "sahman-55",
     branchNumber: "55",
-    fullCode: "MTH-SHM-55",
+    fullCode: "MTH-MED-55",
     name: {
-      ar: "مثوى ٥٥: حي السهمان",
-      en: "Mathwaa 55 — Al-Sahman District"
+      ar: "فرع رقم ٥٥: بني حارثة",
+      en: "Branch No. 55 — Bani Harithah"
     },
     location: {
-      ar: "الرياض - حي السهمان",
-      en: "Riyadh - Al-Sahman District"
+      ar: "المدينة المنورة - بني حارثة",
+      en: "Madinah - Bani Harithah"
     },
     district: {
-      ar: "حي السهمان، الرياض",
-      en: "Al-Sahman District, Riyadh"
+      ar: "بني حارثة، المدينة المنورة",
+      en: "Bani Harithah, Madinah"
     },
     city: {
-      ar: "الرياض",
-      en: "Riyadh"
+      ar: "المدينة المنورة",
+      en: "Madinah"
     },
     address: {
-      ar: "حي السهمان، الرياض، المملكة العربية السعودية",
-      en: "Al-Sahman District, Riyadh, Kingdom of Saudi Arabia"
+      ar: "بني حارثة، المدينة المنورة، المملكة العربية السعودية",
+      en: "Bani Harithah District, Madinah, Kingdom of Saudi Arabia"
     },
     photos: IMAGES.all,
     totalUnits: 3,
@@ -58,7 +58,7 @@ export const branchesList: BranchDetails[] = [
 export const initialOperatingReports: OperatingReport[] = [
   {
     id: "REP-55-01",
-    reportNumber: "1",
+    reportNumber: "55",
     periodKey: "2026-Q2-Q3",
     periodName: {
       ar: "٢٥ أبريل ٢٠٢٦ - ٣١ يوليو ٢٠٢٦",
@@ -72,35 +72,105 @@ export const initialOperatingReports: OperatingReport[] = [
     year: 2026,
     branchId: "sahman-55",
     branchName: {
-      ar: "مثوى ٥٥: حي السهمان",
-      en: "Mathwaa 55 — Al-Sahman District"
+      ar: "فرع ٥٥: المدينة المنورة - بني حارثة",
+      en: "Branch 55: Madinah - Bani Harithah"
     },
     tagline: {
-      ar: "بيتك، راحتك وطمأنينتك",
-      en: "Your home, comfort and peace of mind"
+      ar: "تقرير أداء التشغيل المعتمد",
+      en: "Certified Operating Performance Report"
     },
     clientName: {
       ar: "شركة مرسم للتطوير العقاري",
       en: "Marsam Real Estate Development Company"
     },
     
-    // Core Required Metrics from User Prompt
-    occupancyRate: 37,
-    totalContracts: 23617.57,
-    totalRevenue: 14043.60,
+    // Core Required Metrics (Updated as requested by User)
+    occupancyRate: 38,
+    totalContracts: 23783.99, // Period Revenue
+    totalRevenue: 14043.60,   // Collected Revenue
+    operatorSharePercentage: 20,
+    operatorShareAmount: 4756.79,
+    capitalExpenses: 0.00,
+    netToOwner: 17734.27,
+
+    // Segregated reporting for the 3 units
+    unitReports: [
+      {
+        id: "U1-STUDIO",
+        unitNumber: "1",
+        unitName: { ar: "استوديو (Studio)", en: "Studio" },
+        occupancyRate: 32,
+        periodRevenue: 5850.00,
+        collectedRevenue: 3500.00,
+        operatorShare: 1170.00,
+        netToOwner: 4680.00
+      },
+      {
+        id: "U2-2BR",
+        unitNumber: "2",
+        unitName: { ar: "غرفتان نوم (2BR)", en: "2 Bedrooms (2BR)" },
+        occupancyRate: 39,
+        periodRevenue: 8250.00,
+        collectedRevenue: 4843.60,
+        operatorShare: 1650.00,
+        netToOwner: 6600.00
+      },
+      {
+        id: "U3-3BR",
+        unitNumber: "3",
+        unitName: { ar: "ثلاث غرف نوم (3BR)", en: "3 Bedrooms (3BR)" },
+        occupancyRate: 42,
+        periodRevenue: 9683.99,
+        collectedRevenue: 5700.00,
+        operatorShare: 1936.79,
+        netToOwner: 7747.20
+      }
+    ],
+
+    // Monthly Occupancy Trend (April 2026 to July 2026)
+    monthlyOccupancyTrend: [
+      {
+        monthKey: "2026-04",
+        monthName: { ar: "أبريل ٢٠٢٦", en: "April 2026" },
+        occupancyRate: 13,
+        studioRate: 0,
+        twoBedRate: 0,
+        threeBedRate: 39
+      },
+      {
+        monthKey: "2026-05",
+        monthName: { ar: "مايو ٢٠٢٦", en: "May 2026" },
+        occupancyRate: 35.7,
+        studioRate: 32,
+        twoBedRate: 35,
+        threeBedRate: 40
+      },
+      {
+        monthKey: "2026-06",
+        monthName: { ar: "يونيو ٢٠٢٦", en: "June 2026" },
+        occupancyRate: 13.3,
+        studioRate: 34,
+        twoBedRate: 0,
+        threeBedRate: 6
+      },
+      {
+        monthKey: "2026-07",
+        monthName: { ar: "يوليو ٢٠٢٦", en: "July 2026" },
+        occupancyRate: 67.3,
+        studioRate: 35,
+        twoBedRate: 87,
+        threeBedRate: 80
+      }
+    ],
+
     avgMonthlyReturn: 4388.62,
     directExpenses: 1292.92,
-    capitalExpenses: 0.00,
-    operatorSharePercentage: 20,
-    operatorShareAmount: 4723.51,
-    netToOwner: 17601.13,
-
     totalUnits: 3,
     occupiedUnits: 1,
     adr: 242,
     revPar: 90,
     revenueBreakdown: [
-      { category: { ar: "إجمالي قيمة العقود الإيجارية المبرمة", en: "Total Rental Contracts" }, amount: 23617.57, percentage: 100 }
+      { category: { ar: "إيراد العقود المبرمة للوحدات", en: "Unit Rental Contracts Revenue" }, amount: 23783.99, percentage: 100 }
     ],
     maintenanceCostsCovered: 1292.92,
     utilitiesCostCovered: 0,
@@ -109,18 +179,10 @@ export const initialOperatingReports: OperatingReport[] = [
     payoutDate: "2026-07-31",
     bankAccount: "",
     notes: {
-      ar: "تضم المنشأة 3 وحدات سكنية سجلت نسبة إشغال 37% خلال الفترة. بلغ إجمالي العقود 23,617.57 ريال، مع إجمالي إيراد للفترة قدره 14,043.60 ريال، بمتوسط عائد شهري 4,388.62 ريال. بلغت المصاريف المباشرة 1,292.92 ريال وبدون مصاريف رأسمالية. بلغت حصة المشغل (20%) مبلغ 4,723.51 ريال، ليتبقى صافي عائد للعميل قدره 17,601.13 ريال.",
-      en: "The property comprises 3 units, which recorded an occupancy rate of 37% over the period. Total contracts amounted to SAR 23,617.57, with total revenue for the period of SAR 14,043.60, giving an average monthly return of SAR 4,388.62. Against this, direct expenses were SAR 1,292.92 and capital expenses were nil. The operator's share, calculated at 20%, came to SAR 4,723.51. This leaves a net return to the client of SAR 17,601.13."
+      ar: "تقرير أداء التشغيل لشركة مرسم للتطوير العقاري - فرع 55 (المدينة المنورة - بني حارثة). سجلت الوحدات نسبة إشغال 38%، بإيراد فترة 23,783.99 ريال، وإيراد محصل 14,043.60 ريال، وحصة مشغل 4,756.79 ريال، ومصاريف رأسمالية 0.00 ريال، وصافي عائد للمالك 17,734.27 ريال.",
+      en: "Certified operating performance report for Marsam Real Estate Development Company - Branch 55 (Madinah - Bani Harithah). Units achieved 38% occupancy rate, with SAR 23,783.99 period revenue, SAR 14,043.60 collected revenue, SAR 4,756.79 operator's share, SAR 0.00 capital expenditures, and SAR 17,734.27 net amount for the owner."
     },
-    additionalRemarks: [
-      {
-        id: "rem-55-101",
-        author: "إدارة التشغيل (مثوى)",
-        role: "operator",
-        date: "2026-07-31",
-        content: "تم اعتماد المستند المالي رقم 1 وتحويل صافي العائد النهائي 17,601.13 ريال إلى شركة مرسم للتطوير العقاري."
-      }
-    ]
+    additionalRemarks: []
   }
 ];
 

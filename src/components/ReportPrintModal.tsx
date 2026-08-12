@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Printer } from 'lucide-react';
 import { OperatingReport } from '../types';
-import { ownerProfile, logoUrl } from '../data';
+import { logoUrl } from '../data';
 import { handleImageError } from '../constants/images';
 
 interface ReportPrintModalProps {
@@ -18,36 +18,35 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
 }) => {
   if (!report) return null;
 
-  const ownerName = ownerProfile.name[isAr ? 'ar' : 'en'];
-  const salutation = ownerProfile.salutation[isAr ? 'ar' : 'en'];
-  const branchTitle = report.branchName[isAr ? 'ar' : 'en'];
-  const notesText = report.notes[isAr ? 'ar' : 'en'];
+  const clientName = report.clientName ? report.clientName[isAr ? 'ar' : 'en'] : (isAr ? 'شركة مرسم للتطوير العقاري' : 'Marsam Real Estate Development Company');
+  const branchNumber = report.branchNumber || '55';
+  const branchLocation = isAr ? 'المدينة المنورة - بني حارثة' : 'Madinah - Bani Harithah';
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto print:p-0 print:bg-white print:static">
+      <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto print:p-0 print:bg-white print:static">
         <motion.div
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.95, opacity: 0 }}
-          className="bg-white rounded-3xl max-w-3xl w-full p-8 border border-[#EDE5DC] shadow-2xl space-y-6 my-8 print:shadow-none print:border-none print:m-0 print:p-0"
+          className="bg-white rounded-3xl max-w-2xl w-full p-4 sm:p-8 border border-[#EDE5DC] shadow-2xl space-y-6 my-auto print:shadow-none print:border-none print:m-0 print:p-0 max-h-[92vh] overflow-y-auto [-webkit-overflow-scrolling:touch]"
         >
           {/* Action Bar (Hidden on print) */}
-          <div className="flex items-center justify-between pb-4 border-b border-[#EDE5DC] print:hidden">
-            <span className="text-xs font-bold text-[#8B6F47] uppercase tracking-wider bg-[#B8865F]/15 px-3 py-1 rounded-full">
-              {isAr ? 'معاينة التقرير الرسمى' : 'Official Statement Preview'}
+          <div className="flex items-center justify-between pb-4 border-b border-[#EDE5DC] print:hidden gap-2">
+            <span className="text-xs font-bold text-[#8B6F47] uppercase tracking-wider bg-[#B8865F]/15 px-3 py-1 rounded-full truncate">
+              {isAr ? 'معاينة التقرير الرسمي المباشر' : 'Official Report Statement'}
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-shrink-0">
               <button
                 onClick={() => window.print()}
-                className="flex items-center gap-1.5 text-xs font-bold text-white bg-[#1d1d1f] hover:bg-[#2d2d2f] px-4 py-2 rounded-xl transition"
+                className="flex items-center gap-1.5 text-xs font-bold text-white bg-[#1d1d1f] hover:bg-[#2d2d2f] active:bg-[#3d3d3f] px-3.5 py-2.5 rounded-xl transition shadow-xs min-h-[40px]"
               >
                 <Printer className="w-4 h-4 text-[#C89565]" />
-                <span>{isAr ? 'طباعة المستند / PDF' : 'Print Statement'}</span>
+                <span className="hidden sm:inline">{isAr ? 'طباعة التقرير / PDF' : 'Print Statement'}</span>
               </button>
               <button
                 onClick={onClose}
-                className="p-2 rounded-full bg-[#FAF7F2] hover:bg-[#F0E8DD] text-stone-600 transition"
+                className="w-10 h-10 rounded-full bg-[#FAF7F2] hover:bg-[#F0E8DD] text-stone-600 transition flex items-center justify-center flex-shrink-0"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -56,10 +55,10 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
 
           {/* PRINTABLE DOCUMENT BODY */}
           <div className="space-y-6 text-[#1d1d1f]">
-            {/* Document Header */}
-            <div className="flex items-start justify-between border-b-2 border-[#1d1d1f] pb-6">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-[#FAF7F2] p-2 border border-[#EDE5DC]">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b-2 border-[#1d1d1f] pb-4 sm:pb-5 gap-2">
+              <div className="flex items-center gap-2.5 sm:gap-3">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FAF7F2] p-2 border border-[#EDE5DC] flex-shrink-0">
                   <img 
                     src={logoUrl} 
                     alt="Mathwaa Hospitality Logo" 
@@ -70,131 +69,127 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
                   />
                 </div>
                 <div>
-                  <h1 className="text-xl font-extrabold text-[#1d1d1f]">
+                  <h1 className="text-sm sm:text-lg font-black text-[#1d1d1f]">
                     {isAr ? 'مؤسسة مثوى للتشغيل والحلول العقارية' : 'Mathwaa Hospitality & Real Estate Operations'}
                   </h1>
-                  <p className="text-xs text-[#8B6F47] font-semibold">
-                    {isAr ? 'تقرير الأداء التشغيلي المعتمد لحساب المالك' : 'Certified Owner Operating Performance Statement'}
-                  </p>
-                  <p className="text-[10px] text-stone-500 font-mono mt-0.5">
-                    Ref: {report.reportNumber} | Date: {report.payoutDate}
+                  <p className="text-[11px] sm:text-xs text-[#8B6F47] font-bold">
+                    {isAr ? 'التقرير التشغيلي والمالي المعتمد' : 'Certified Operating & Financial Statement'}
                   </p>
                 </div>
               </div>
-
-              <div className="text-right text-xs">
-                <span className="bg-emerald-100 text-emerald-900 font-extrabold px-3 py-1 rounded-full border border-emerald-300">
-                  {isAr ? 'حالة التوزيع: تم التحويل' : 'Payout Status: Transferred'}
+              <div className="text-right text-xs flex-shrink-0">
+                <span className="bg-emerald-100 text-emerald-900 font-extrabold px-2.5 py-1 rounded-full border border-emerald-300 text-[10px] sm:text-xs">
+                  {isAr ? 'تم تحويل الصافي' : 'Transferred'}
                 </span>
-                <p className="text-[11px] text-stone-500 mt-2 font-mono">{report.payoutRef}</p>
-              </div>
-            </div>
-
-            {/* Target Owner Addressed Information */}
-            <div className="bg-[#FAF7F2] p-5 rounded-2xl border border-[#EDE5DC] grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <span className="text-[11px] font-bold text-[#8B6F47] uppercase block">
-                  {isAr ? 'الموجه إليه التقرير (المالك):' : 'Addressed To (Property Owner):'}
-                </span>
-                <p className="text-base font-extrabold text-[#1d1d1f] mt-0.5">
-                  {salutation} {ownerName}
-                </p>
-                <p className="text-xs text-stone-600 font-mono">{ownerProfile.ownerCode}</p>
-              </div>
-
-              <div>
-                <span className="text-[11px] font-bold text-[#8B6F47] uppercase block">
-                  {isAr ? 'بيانات العقار والتقرير:' : 'Property & Report Details:'}
-                </span>
-                <p className="text-base font-extrabold text-[#1d1d1f] mt-0.5">
-                  {branchTitle}
-                </p>
-                <p className="text-xs text-stone-600 font-semibold">{report.periodName[isAr ? 'ar' : 'en']}</p>
-                <p className="text-[11px] text-[#B8865F] font-bold italic mt-0.5">
-                  "{report.tagline ? report.tagline[isAr ? 'ar' : 'en'] : (isAr ? 'بيتك، راحتك وطمأنينتك' : 'Your home, comfort and peace of mind')}"
+                <p className="text-[9px] sm:text-[10px] text-stone-400 font-mono mt-1 hidden sm:block">
+                  Ref: {report.payoutRef || 'TXN-20260731-MTH55'}
                 </p>
               </div>
             </div>
 
-            {/* Statement Line Item Breakdown Table */}
+            {/* Statement Table containing EXACTLY the 9 requested items */}
             <div>
-              <h2 className="text-xs font-extrabold text-[#8B6F47] uppercase tracking-wider mb-2">
-                {isAr ? 'جدول الميزانية والتوزيعات التشغيلية المفصلة' : 'Detailed Financial Statement & Operational Accounting'}
+              <h2 className="text-xs font-extrabold text-[#8B6F47] uppercase tracking-wider mb-2.5">
+                {isAr ? 'ملخص التقرير التشغيلي والمالي' : 'Operating & Financial Report Summary'}
               </h2>
-              <table className="w-full text-xs border-collapse border border-[#EDE5DC]">
-                <thead>
-                  <tr className="bg-[#1d1d1f] text-white text-right">
-                    <th className="p-3 font-bold border border-stone-800">{isAr ? 'البند التشغيلي' : 'Line Item'}</th>
-                    <th className="p-3 font-bold border border-stone-800">{isAr ? 'التفاصيل والوصف' : 'Details & Description'}</th>
-                    <th className="p-3 font-bold border border-stone-800 text-left">{isAr ? 'المبلغ (ريال)' : 'Amount (SAR)'}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-[#EDE5DC]">
-                    <td className="p-3 font-bold">{isAr ? 'الوحدات ونسبة الإشغال' : 'Property Units & Occupancy Rate'}</td>
-                    <td className="p-3">{isAr ? `تضم المنشأة 3 وحدات سكنية بنسبة إشغال ${report.occupancyRate}%` : `3 units with ${report.occupancyRate}% occupancy rate`}</td>
-                    <td className="p-3 font-extrabold text-left">{report.occupancyRate}%</td>
-                  </tr>
-                  <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
-                    <td className="p-3 font-bold">{isAr ? 'إجمالي قيم العقود المبرمة' : 'Total Rental Contracts'}</td>
-                    <td className="p-3">{isAr ? 'مجموع العقود الموثقة خلال الفترة' : 'Sum of executed lease contracts'}</td>
-                    <td className="p-3 font-extrabold text-left">{report.totalContracts?.toLocaleString(undefined, { minimumFractionDigits: 2 }) || '23,617.57'}</td>
-                  </tr>
-                  <tr className="border-b border-[#EDE5DC]">
-                    <td className="p-3 font-bold">{isAr ? 'إجمالي إيراد الفترة الفعلي' : 'Total Revenue for Period'}</td>
-                    <td className="p-3">{isAr ? 'شمل التدفقات والإيرادات الفعلية المحصلة' : 'Total realized operational revenue'}</td>
-                    <td className="p-3 font-black text-[#1d1d1f] text-left">{report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
-                  </tr>
-                  <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
-                    <td className="p-3 font-bold text-stone-700">{isAr ? 'متوسط العائد الشهري' : 'Average Monthly Return'}</td>
-                    <td className="p-3">{isAr ? 'معدل الدخل الشهري المتحقق للعقار' : 'Average realized monthly performance'}</td>
-                    <td className="p-3 font-bold text-stone-700 text-left">{report.avgMonthlyReturn?.toLocaleString(undefined, { minimumFractionDigits: 2 }) || '4,388.62'}</td>
-                  </tr>
-                  <tr className="border-b border-[#EDE5DC]">
-                    <td className="p-3 font-bold text-amber-900">{isAr ? 'المصاريف المباشرة' : 'Direct Expenses'}</td>
-                    <td className="p-3">{isAr ? 'مصاريف التشغيل المباشرة للفترة' : 'Operational direct expenses'}</td>
-                    <td className="p-3 font-bold text-amber-800 text-left">- {report.directExpenses?.toLocaleString(undefined, { minimumFractionDigits: 2 }) || '1,292.92'}</td>
-                  </tr>
-                  <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
-                    <td className="p-3 font-bold text-stone-600">{isAr ? 'المصاريف الرأسمالية' : 'Capital Expenses'}</td>
-                    <td className="p-3">{isAr ? 'لا يوجد مصاريف رأسمالية (Nil)' : 'Nil (No capital expenditure)'}</td>
-                    <td className="p-3 font-bold text-stone-500 text-left">0.00</td>
-                  </tr>
-                  <tr className="border-b border-[#EDE5DC]">
-                    <td className="p-3 font-bold text-[#8B6F47]">{isAr ? `حصة المشغل (${report.operatorSharePercentage}%)` : `Operator Share (${report.operatorSharePercentage}%)`}</td>
-                    <td className="p-3">{isAr ? `مقابل الإدارة والتشغيل والخدمات (${report.operatorSharePercentage}%)` : `Operator management & operations fee (${report.operatorSharePercentage}%)`}</td>
-                    <td className="p-3 font-bold text-stone-700 text-left">- {report.operatorShareAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
-                  </tr>
-                  <tr className="bg-[#FAF7F2] font-black text-sm border-t-2 border-[#1d1d1f]">
-                    <td className="p-4 text-[#8B6F47]">{isAr ? 'صافي العائد المستحق النهائي للمالك' : 'Net Return to Client (Owner)'}</td>
-                    <td className="p-4 text-xs font-normal text-stone-600">{isAr ? 'تم تحويل الصافي المالي بالكامل للمالك' : 'Net payout transferred in full to owner'}</td>
-                    <td className="p-4 text-[#B8865F] text-left text-base">{report.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
-                  </tr>
-                </tbody>
-              </table>
+
+              <div className="overflow-x-auto border border-[#EDE5DC] rounded-xl touch-pan-x [-webkit-overflow-scrolling:touch]">
+                <table className="w-full text-xs border-collapse">
+                  <thead>
+                    <tr className="bg-[#1d1d1f] text-white text-right">
+                      <th className="p-2.5 sm:p-3 font-bold border border-stone-800">{isAr ? 'البند' : 'Item'}</th>
+                      <th className="p-2.5 sm:p-3 font-bold border border-stone-800 text-left">{isAr ? 'القيمة / القراءة' : 'Value'}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-[#EDE5DC]">
+                      <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'اسم العميل' : 'Client Name'}</td>
+                      <td className="p-2.5 sm:p-3 font-bold text-left">{clientName}</td>
+                    </tr>
+                    <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
+                      <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'رقم الفرع' : 'Branch Number'}</td>
+                      <td className="p-2.5 sm:p-3 font-black text-left">#{branchNumber}</td>
+                    </tr>
+                    <tr className="border-b border-[#EDE5DC]">
+                      <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'موقع الفرع' : 'Branch Location'}</td>
+                      <td className="p-2.5 sm:p-3 font-bold text-left">{branchLocation}</td>
+                    </tr>
+                    <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
+                      <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'نسبة الإشغال الكلية' : 'Overall Occupancy Rate'}</td>
+                      <td className="p-2.5 sm:p-3 font-black text-emerald-700 text-left">{report.occupancyRate}%</td>
+                    </tr>
+                    <tr className="border-b border-[#EDE5DC]">
+                      <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'إيراد الفترة' : 'Period Revenue'}</td>
+                      <td className="p-2.5 sm:p-3 font-black text-left">{(report.totalContracts || 23783.99).toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                    </tr>
+                    <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
+                      <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'الإيراد المحصل' : 'Collected Revenue'}</td>
+                      <td className="p-2.5 sm:p-3 font-black text-emerald-800 text-left">{report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                    </tr>
+                    <tr className="border-b border-[#EDE5DC]">
+                      <td className="p-2.5 sm:p-3 font-bold">• {isAr ? `حصة المشغل (${report.operatorSharePercentage}%)` : `Operator's Share (${report.operatorSharePercentage}%)`}</td>
+                      <td className="p-2.5 sm:p-3 font-black text-amber-900 text-left">{report.operatorShareAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                    </tr>
+                    <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
+                      <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'المصاريف الرأسمالية' : 'Capital Expenditures'}</td>
+                      <td className="p-2.5 sm:p-3 font-extrabold text-stone-600 text-left">{(report.capitalExpenses || 0).toFixed(2)} SAR</td>
+                    </tr>
+                    <tr className="bg-[#FAF7F2] font-black text-xs sm:text-sm border-t-2 border-[#1d1d1f]">
+                      <td className="p-3 sm:p-4 text-[#8B6F47]">• {isAr ? 'الصافي للمالك' : 'Net Amount for the Owner'}</td>
+                      <td className="p-3 sm:p-4 text-[#B8865F] text-left text-sm sm:text-base">{report.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
-            {/* Notes Field */}
-            <div className="p-4 bg-[#FAF7F2] rounded-2xl border border-[#EDE5DC] text-xs space-y-1">
-              <span className="font-extrabold text-[#8B6F47] block">
-                {isAr ? 'ملاحظات الإدارة المشغلة:' : 'Operator Notes:'}
-              </span>
-              <p className="text-stone-800 font-medium leading-relaxed">{notesText}</p>
-            </div>
+            {/* Segregated 3 Units Table */}
+            {report.unitReports && (
+              <div>
+                <h2 className="text-xs font-extrabold text-[#8B6F47] uppercase tracking-wider mb-2">
+                  {isAr ? 'تفاصيل أداء الوحدات السكنية الـ ٣' : '3 Units Segregated Performance'}
+                </h2>
+                <div className="overflow-x-auto border border-[#EDE5DC] rounded-xl touch-pan-x [-webkit-overflow-scrolling:touch]">
+                  <table className="w-full text-xs border-collapse border border-[#EDE5DC] text-center min-w-[500px]">
+                    <thead>
+                      <tr className="bg-[#FAF7F2] font-bold text-[#8B6F47]">
+                        <th className="p-2 border border-[#EDE5DC]">{isAr ? 'الوحدة' : 'Unit'}</th>
+                        <th className="p-2 border border-[#EDE5DC]">{isAr ? 'النوع' : 'Type'}</th>
+                        <th className="p-2 border border-[#EDE5DC]">{isAr ? 'الإشغال' : 'Occupancy'}</th>
+                        <th className="p-2 border border-[#EDE5DC]">{isAr ? 'إيراد الفترة' : 'Period Rev'}</th>
+                        <th className="p-2 border border-[#EDE5DC]">{isAr ? 'المحصل' : 'Collected'}</th>
+                        <th className="p-2 border border-[#EDE5DC]">{isAr ? 'الصافي للمالك' : 'Net Owner'}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {report.unitReports.map((u) => (
+                        <tr key={u.id} className="border-b border-[#EDE5DC]">
+                          <td className="p-2 font-bold">#{u.unitNumber}</td>
+                          <td className="p-2">{u.unitName[isAr ? 'ar' : 'en']}</td>
+                          <td className="p-2 font-bold text-emerald-700">{u.occupancyRate}%</td>
+                          <td className="p-2">{u.periodRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                          <td className="p-2 font-bold">{u.collectedRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                          <td className="p-2 font-black text-[#B8865F]">{u.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
 
             {/* Official Signatures */}
-            <div className="pt-8 border-t border-[#EDE5DC] grid grid-cols-2 gap-8 text-xs">
+            <div className="pt-4 sm:pt-6 border-t border-[#EDE5DC] grid grid-cols-2 gap-4 sm:gap-8 text-xs">
               <div>
-                <p className="font-bold text-[#8B6F47]">{isAr ? 'إدارة العقارات والحلول السكنية (مثوى):' : 'Mathwaa Operations Management:'}</p>
-                <div className="h-12 border-b border-dashed border-stone-300 mt-2 flex items-end pb-1">
-                  <span className="text-[10px] text-stone-400 font-mono">Mathwaa Verified Stamp</span>
+                <p className="font-bold text-[#8B6F47]">{isAr ? 'إدارة التشغيل (مثوى):' : 'Mathwaa Operations:'}</p>
+                <div className="mt-4 border-b border-[#EDE5DC] pb-1 font-mono text-[11px] text-stone-500">
+                  {isAr ? 'مؤسسة مثوى للتشغيل' : 'Mathwaa Operations Co.'}
                 </div>
               </div>
-
-              <div>
-                <p className="font-bold text-[#8B6F47]">{isAr ? `اعتماد المالك (${ownerName}):` : `Owner Approval (${ownerName}):`}</p>
-                <div className="h-12 border-b border-dashed border-stone-300 mt-2 flex items-end pb-1">
-                  <span className="text-[10px] text-stone-400 font-mono">{ownerName}</span>
+              <div className="text-left">
+                <p className="font-bold text-[#8B6F47]">{isAr ? 'المعتمد (المالك):' : 'Approved (Owner):'}</p>
+                <div className="mt-4 border-b border-[#EDE5DC] pb-1 font-bold text-stone-700">
+                  {clientName}
                 </div>
               </div>
             </div>

@@ -1,12 +1,12 @@
 import React from 'react';
 
-// Google Drive thumbnail direct-serving endpoints for the 5 property photos
+// Google Drive thumbnail direct-serving endpoints optimized for fast loading (w1000 width)
 export const DRIVE_IMAGES = [
-  'https://drive.google.com/thumbnail?id=1xO9spaEkWAaoNGZ4JSS9qX9uTb7y92Up&sz=w2000',
-  'https://drive.google.com/thumbnail?id=16FkMeI6giJpikiDroImDUnIm9UNfNEKC&sz=w2000',
-  'https://drive.google.com/thumbnail?id=1DT4VAwQsDl4Vx6Kbpa4fk9xwg4gRugCd&sz=w2000',
-  'https://drive.google.com/thumbnail?id=1jLFpMywdq-RLZ4_m3TsFXWGE489oenrP&sz=w2000',
-  'https://drive.google.com/thumbnail?id=1R7o20t18BDpNBVVh-JAEuvUW47Y9lBL2&sz=w2000',
+  'https://drive.google.com/thumbnail?id=1xO9spaEkWAaoNGZ4JSS9qX9uTb7y92Up&sz=w1000',
+  'https://drive.google.com/thumbnail?id=16FkMeI6giJpikiDroImDUnIm9UNfNEKC&sz=w1000',
+  'https://drive.google.com/thumbnail?id=1DT4VAwQsDl4Vx6Kbpa4fk9xwg4gRugCd&sz=w1000',
+  'https://drive.google.com/thumbnail?id=1jLFpMywdq-RLZ4_m3TsFXWGE489oenrP&sz=w1000',
+  'https://drive.google.com/thumbnail?id=1R7o20t18BDpNBVVh-JAEuvUW47Y9lBL2&sz=w1000',
 ] as const;
 
 export const IMAGES = {
@@ -16,6 +16,14 @@ export const IMAGES = {
   branch4: DRIVE_IMAGES[3],
   branch5: DRIVE_IMAGES[4],
   all: [...DRIVE_IMAGES],
+};
+
+// Preload helper to cache images in browser memory immediately for fast switching
+export const preloadImages = (urls: string[]) => {
+  urls.forEach((url) => {
+    const img = new Image();
+    img.src = url;
+  });
 };
 
 // Neutral SVG placeholder data URI for image error fallback
