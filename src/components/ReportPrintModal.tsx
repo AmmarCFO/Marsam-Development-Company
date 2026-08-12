@@ -18,7 +18,7 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
 }) => {
   if (!report) return null;
 
-  const clientName = report.clientName ? report.clientName[isAr ? 'ar' : 'en'] : (isAr ? 'المالك: شركة مرسم للتطوير العقاري' : 'Owner: Marsam Real Estate Development Company');
+  const clientName = report.clientName ? report.clientName[isAr ? 'ar' : 'en'] : (isAr ? 'شركة مرسم للتطوير العقاري' : 'Marsam Real Estate Development Company');
   const branchNumber = report.branchNumber || '55';
   const branchLocation = isAr ? 'المدينة المنورة - بني حارثة' : 'Madinah - Bani Harithah';
 

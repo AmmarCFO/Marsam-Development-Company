@@ -26,7 +26,7 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
 
   const clientNameText = report.clientName 
     ? report.clientName[isAr ? 'ar' : 'en'] 
-    : (isAr ? 'المالك: شركة مرسم للتطوير العقاري' : 'Owner: Marsam Real Estate Development Company');
+    : (isAr ? 'شركة مرسم للتطوير العقاري' : 'Marsam Real Estate Development Company');
   const branchNumberText = report.branchNumber || '55';
   const branchLocationText = isAr ? 'المدينة المنورة - بني حارثة' : 'Madinah - Bani Harithah';
 
@@ -91,9 +91,6 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
                 <span className="text-sm sm:text-base font-extrabold text-[#1d1d1f] block leading-snug">
                   {clientNameText}
                 </span>
-                <span className="text-[11px] font-semibold text-stone-500 mt-0.5 block">
-                  {isAr ? 'الجهة المالكة' : 'Property Owner'}
-                </span>
               </div>
             </div>
 
@@ -110,9 +107,6 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
               <div>
                 <span className="text-base sm:text-lg font-black text-[#1d1d1f] block">
                   {isAr ? 'مثوى ٥٥' : 'Mathwaa 55'}
-                </span>
-                <span className="text-[11px] font-semibold text-stone-500 mt-0.5 block">
-                  {isAr ? 'فرع تشغيلي رئيسي' : 'Primary Operating Branch'}
                 </span>
               </div>
             </div>
@@ -150,9 +144,6 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
               <div>
                 <span className="text-base sm:text-lg font-black text-[#1d1d1f] block">
                   {isAr ? '٣ وحدات' : '3 Units'}
-                </span>
-                <span className="text-[11px] font-semibold text-emerald-700 mt-0.5 block">
-                  {isAr ? 'نشطة ومستغلة بالكامل' : 'Fully Active & Operational'}
                 </span>
               </div>
             </div>

@@ -82,8 +82,8 @@ export const initialOperatingReports: OperatingReport[] = [
       en: "Certified Operating Performance Report"
     },
     clientName: {
-      ar: "المالك: شركة مرسم للتطوير العقاري",
-      en: "Owner: Marsam Real Estate Development Company"
+      ar: "شركة مرسم للتطوير العقاري",
+      en: "Marsam Real Estate Development Company"
     },
     
     // Core Required Metrics (Updated as requested by User)
