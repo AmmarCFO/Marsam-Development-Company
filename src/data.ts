@@ -49,7 +49,9 @@ export const branchesList: BranchDetails[] = [
     photos: IMAGES.all,
     totalUnits: 3,
     unitBreakdown: [
-      { type: { ar: "شقق سكنية مفروشة فاخرة", en: "Luxury Furnished Residential Units" }, count: 3, avgMonthlyRate: "4,388.62 SAR" }
+      { type: { ar: "استوديو", en: "Studio" }, count: 1, avgMonthlyRate: "3,800 SAR" },
+      { type: { ar: "شقة غرفتين نوم", en: "2 bedroom apartment" }, count: 1, avgMonthlyRate: "4,500 SAR" },
+      { type: { ar: "شقة ثلاث غرف نوم", en: "3 bedroom apartment" }, count: 1, avgMonthlyRate: "4,865.86 SAR" }
     ],
     contactPhone: "+966 56 208 9171"
   }
@@ -80,18 +82,18 @@ export const initialOperatingReports: OperatingReport[] = [
       en: "Certified Operating Performance Report"
     },
     clientName: {
-      ar: "شركة مرسم للتطوير العقاري",
-      en: "Marsam Real Estate Development Company"
+      ar: "المالك: شركة مرسم للتطوير العقاري",
+      en: "Owner: Marsam Real Estate Development Company"
     },
     
     // Core Required Metrics (Updated as requested by User)
     occupancyRate: 38,
-    totalContracts: 23783.99, // Period Revenue
-    totalRevenue: 14043.60,   // Collected Revenue
+    totalContracts: 14043.60, // Period Revenue
+    totalRevenue: 23783.99,   // Collected Revenue
     operatorSharePercentage: 20,
-    operatorShareAmount: 4756.79,
+    operatorShareAmount: 2808.72,
     capitalExpenses: 0.00,
-    netToOwner: 17734.27,
+    netToOwner: 11234.88,
 
     // Segregated reporting for the 3 units
     unitReports: [
@@ -100,30 +102,30 @@ export const initialOperatingReports: OperatingReport[] = [
         unitNumber: "1",
         unitName: { ar: "استوديو (Studio)", en: "Studio" },
         occupancyRate: 32,
-        periodRevenue: 5850.00,
-        collectedRevenue: 3500.00,
-        operatorShare: 1170.00,
-        netToOwner: 4680.00
+        periodRevenue: 3500.00,
+        collectedRevenue: 5850.00,
+        operatorShare: 700.00,
+        netToOwner: 2800.00
       },
       {
         id: "U2-2BR",
         unitNumber: "2",
         unitName: { ar: "غرفتان نوم (2BR)", en: "2 Bedrooms (2BR)" },
         occupancyRate: 39,
-        periodRevenue: 8250.00,
-        collectedRevenue: 4843.60,
-        operatorShare: 1650.00,
-        netToOwner: 6600.00
+        periodRevenue: 4843.60,
+        collectedRevenue: 8250.00,
+        operatorShare: 968.72,
+        netToOwner: 3874.88
       },
       {
         id: "U3-3BR",
         unitNumber: "3",
         unitName: { ar: "ثلاث غرف نوم (3BR)", en: "3 Bedrooms (3BR)" },
         occupancyRate: 42,
-        periodRevenue: 9683.99,
-        collectedRevenue: 5700.00,
-        operatorShare: 1936.79,
-        netToOwner: 7747.20
+        periodRevenue: 5700.00,
+        collectedRevenue: 9683.99,
+        operatorShare: 1140.00,
+        netToOwner: 4560.00
       }
     ],
 

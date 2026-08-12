@@ -18,7 +18,7 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
 }) => {
   if (!report) return null;
 
-  const clientName = report.clientName ? report.clientName[isAr ? 'ar' : 'en'] : (isAr ? 'شركة مرسم للتطوير العقاري' : 'Marsam Real Estate Development Company');
+  const clientName = report.clientName ? report.clientName[isAr ? 'ar' : 'en'] : (isAr ? 'المالك: شركة مرسم للتطوير العقاري' : 'Owner: Marsam Real Estate Development Company');
   const branchNumber = report.branchNumber || '55';
   const branchLocation = isAr ? 'المدينة المنورة - بني حارثة' : 'Madinah - Bani Harithah';
 
@@ -58,11 +58,11 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
             {/* Header */}
             <div className="flex items-center justify-between border-b-2 border-[#1d1d1f] pb-4 sm:pb-5 gap-2">
               <div className="flex items-center gap-2.5 sm:gap-3">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FAF7F2] p-2 border border-[#EDE5DC] flex-shrink-0">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FAF7F2] p-1 border border-[#EDE5DC] flex-shrink-0 overflow-hidden flex items-center justify-center">
                   <img 
                     src={logoUrl} 
-                    alt="Mathwaa Hospitality Logo" 
-                    className="w-full h-full object-contain" 
+                    alt="Brand Logo" 
+                    className="w-[170%] h-[170%] max-w-none object-cover object-top -translate-y-[12%]" 
                     referrerPolicy="no-referrer" 
                     loading="lazy"
                     onError={handleImageError}
@@ -70,10 +70,13 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
                 </div>
                 <div>
                   <h1 className="text-sm sm:text-lg font-black text-[#1d1d1f]">
-                    {isAr ? 'مؤسسة مثوى للتشغيل والحلول العقارية' : 'Mathwaa Hospitality & Real Estate Operations'}
+                    {isAr ? 'تقرير الأداء التشغيلي (١)' : 'Operational Performance Report (1)'}
                   </h1>
                   <p className="text-[11px] sm:text-xs text-[#8B6F47] font-bold">
-                    {isAr ? 'التقرير التشغيلي والمالي المعتمد' : 'Certified Operating & Financial Statement'}
+                    {isAr ? 'الفرع: مثوى ٥٥ • المدينة المنورة - بني حارثة' : 'Branch: Mathwaa 55 • Madinah - Bani Harithah'}
+                  </p>
+                  <p className="text-[10px] sm:text-[11px] text-stone-600 font-semibold mt-0.5">
+                    {isAr ? 'عدد الوحدات: ٣ وحدات (استوديو • شقة غرفتين نوم • شقة ثلاث غرف نوم)' : 'Number of Units: 3 units (Studio • 2 bedroom apartment • 3 bedroom apartment)'}
                   </p>
                 </div>
               </div>
@@ -120,7 +123,7 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
                     </tr>
                     <tr className="border-b border-[#EDE5DC]">
                       <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'إيراد الفترة' : 'Period Revenue'}</td>
-                      <td className="p-2.5 sm:p-3 font-black text-left">{(report.totalContracts || 23783.99).toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                      <td className="p-2.5 sm:p-3 font-black text-left">{(report.totalContracts || 14043.60).toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                     </tr>
                     <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
                       <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'الإيراد المحصل' : 'Collected Revenue'}</td>
@@ -181,9 +184,9 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
             {/* Official Signatures */}
             <div className="pt-4 sm:pt-6 border-t border-[#EDE5DC] grid grid-cols-2 gap-4 sm:gap-8 text-xs">
               <div>
-                <p className="font-bold text-[#8B6F47]">{isAr ? 'إدارة التشغيل (مثوى):' : 'Mathwaa Operations:'}</p>
+                <p className="font-bold text-[#8B6F47]">{isAr ? 'إدارة التشغيل:' : 'Operations Management:'}</p>
                 <div className="mt-4 border-b border-[#EDE5DC] pb-1 font-mono text-[11px] text-stone-500">
-                  {isAr ? 'مؤسسة مثوى للتشغيل' : 'Mathwaa Operations Co.'}
+                  {isAr ? 'إدارة التشغيل والحلول' : 'Operations Management Co.'}
                 </div>
               </div>
               <div className="text-left">

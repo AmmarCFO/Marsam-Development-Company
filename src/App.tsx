@@ -19,14 +19,14 @@ export default function App() {
 
   useEffect(() => {
     document.title = isAr
-      ? `مثوى | التقرير التشغيلي - فرع ٥٥`
-      : `Mathwaa | Operating Report - Branch 55`;
+      ? `التقرير التشغيلي - فرع ٥٥`
+      : `Operating Report - Branch 55`;
     document.documentElement.dir = isAr ? 'rtl' : 'ltr';
     document.documentElement.lang = isAr ? 'ar' : 'en';
   }, [isAr]);
 
   return (
-    <div className="relative min-h-screen bg-[#FAF7F2] text-[#1d1d1f] font-['Cairo',sans-serif] selection:bg-[#B8865F]/20 selection:text-[#8B6F47] overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#FAF7F2] text-[#1d1d1f] font-['Cairo',sans-serif] selection:bg-[#B8865F]/20 selection:text-[#8B6F47] overflow-x-clip">
       {/* Dynamic Animated Glowing Orbs Background (Mobile & Desktop) */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-60 sm:opacity-75">
         {/* Top-Right Gold Glow Orb */}
@@ -78,13 +78,12 @@ export default function App() {
         />
       </div>
 
-      {/* Header */}
-      <div className="relative z-10">
-        <Header
-          isAr={isAr}
-          setIsAr={setIsAr}
-        />
-      </div>
+      {/* Header - Sticky Top Bar */}
+      <Header
+        isAr={isAr}
+        setIsAr={setIsAr}
+        reportDate={reports[0]?.periodName}
+      />
 
       {/* Main Container */}
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-6 pb-20 space-y-6">
@@ -96,7 +95,7 @@ export default function App() {
           setSelectedBranchId={setSelectedBranchId}
         />
 
-        {/* 2. Structured Operating Report containing strictly the 9 requested metrics */}
+        {/* 2. Structured Operating Report containing strictly requested metrics */}
         <OperatingReportBoard
           isAr={isAr}
           reports={reports}
