@@ -437,9 +437,6 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
                 </p>
               </div>
             </div>
-            <span className="text-xs bg-emerald-100 text-emerald-900 font-bold px-2.5 py-1 rounded-md border border-emerald-200">
-              {isAr ? 'بيانات معتمدة' : 'Verified Data'}
-            </span>
           </div>
 
           <div className="bg-[#FAF7F2] p-4 sm:p-6 rounded-2xl border border-[#EDE5DC] space-y-4">
