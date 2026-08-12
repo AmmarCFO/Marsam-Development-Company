@@ -14,12 +14,25 @@ export const Header: React.FC<HeaderProps> = ({
   setIsAr
 }) => {
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#EDE5DC] transition-all print:hidden shadow-xs">
+    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-[#EDE5DC] transition-all print:hidden shadow-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-2">
         {/* Brand & Title */}
         <div className="flex items-center gap-2.5 sm:gap-3">
-          <div className="relative flex-shrink-0">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#FAF7F2] p-1.5 flex items-center justify-center border border-[#EDE5DC] shadow-xs">
+          <div className="relative flex-shrink-0 group">
+            {/* Animated Glow Ring behind logo */}
+            <motion.div
+              animate={{
+                scale: [1, 1.15, 1],
+                opacity: [0.4, 0.75, 0.4]
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: 'easeInOut'
+              }}
+              className="absolute -inset-1 bg-gradient-to-r from-[#B8865F] via-[#C89565] to-[#E0C9B1] rounded-2xl blur-xs opacity-50"
+            />
+            <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white p-1.5 flex items-center justify-center border border-[#EDE5DC] shadow-xs">
               <img 
                 src={logoUrl} 
                 alt="Mathwaa Brand Logo" 
@@ -35,8 +48,20 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="font-extrabold text-base sm:text-lg text-[#1d1d1f] tracking-tight">
                 {isAr ? 'مثوى' : 'Mathwaa'}
               </span>
-              <span className="text-[10px] sm:text-xs bg-[#B8865F]/15 border border-[#C89565]/40 text-[#8B6F47] px-2.5 py-0.5 rounded-full font-bold shadow-2xs whitespace-nowrap">
-                {isAr ? 'التقرير التشغيلي الرسمي' : 'Official Operating Report'}
+              {/* Shimmer Badge */}
+              <span className="relative overflow-hidden text-[10px] sm:text-xs bg-[#B8865F]/15 border border-[#C89565]/40 text-[#8B6F47] px-2.5 py-0.5 rounded-full font-bold shadow-2xs whitespace-nowrap">
+                <motion.span
+                  animate={{
+                    x: ['-100%', '200%']
+                  }}
+                  transition={{
+                    duration: 3.5,
+                    repeat: Infinity,
+                    ease: 'linear'
+                  }}
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -skew-x-12"
+                />
+                <span className="relative z-10">{isAr ? 'التقرير التشغيلي الرسمي' : 'Official Operating Report'}</span>
               </span>
             </div>
           </div>
@@ -47,6 +72,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Print PDF */}
           <motion.button
             whileTap={{ scale: 0.94 }}
+            whileHover={{ scale: 1.02 }}
             onClick={() => window.print()}
             className="flex items-center justify-center gap-1.5 text-xs font-bold text-white bg-[#1d1d1f] hover:bg-[#2d2d2f] active:bg-[#3d3d3f] px-3 sm:px-4 py-2.5 rounded-xl transition shadow-xs min-h-[42px]"
           >
@@ -57,6 +83,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Language Toggle */}
           <motion.button
             whileTap={{ scale: 0.94 }}
+            whileHover={{ scale: 1.02 }}
             onClick={() => setIsAr(!isAr)}
             className="flex items-center justify-center gap-1.5 text-xs font-bold text-[#1d1d1f] bg-white hover:bg-[#FAF7F2] active:bg-[#F5EFE6] border border-[#EDE5DC] px-3 py-2.5 rounded-xl shadow-xs transition min-h-[42px]"
           >

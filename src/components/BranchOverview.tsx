@@ -265,14 +265,29 @@ export const BranchOverview: React.FC<BranchOverviewProps> = ({
           </div>
 
           {/* Main Large Featured Photo with Touch Swipe & Motion Transition */}
-          <div 
-            className="relative aspect-16/10 rounded-2xl overflow-hidden border border-[#EDE5DC] shadow-sm group bg-stone-100 touch-pan-y"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
+          <div className="relative group">
+            {/* Ambient Moving Glow Aura Behind Photo Container */}
+            <motion.div
+              animate={{
+                scale: [0.98, 1.03, 0.98],
+                opacity: [0.3, 0.65, 0.3]
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: 'easeInOut'
+              }}
+              className="absolute -inset-1.5 bg-gradient-to-r from-[#B8865F]/40 via-[#C89565]/30 to-[#E0C9B1]/40 rounded-3xl blur-md pointer-events-none"
+            />
+
+            <div 
+              className="relative aspect-16/10 rounded-2xl overflow-hidden border border-[#EDE5DC] shadow-sm bg-stone-100 touch-pan-y"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
             {/* 3-Second Animated Progress Bar */}
             {isPlaying && !isHovered && (
               <div className="absolute top-0 left-0 right-0 h-1 bg-black/20 z-20 overflow-hidden">
@@ -337,6 +352,7 @@ export const BranchOverview: React.FC<BranchOverviewProps> = ({
               <ChevronRight className="w-6 h-6" />
             </motion.button>
           </div>
+        </div>
 
           {/* Thumbnails Row */}
           <div className="grid grid-cols-5 gap-2 touch-pan-x">

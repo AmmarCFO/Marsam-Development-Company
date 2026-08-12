@@ -176,13 +176,42 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
             </div>
 
             {/* 9. Net Amount for the Owner */}
-            <div className="bg-gradient-to-br from-[#1d1d1f] via-[#2a2622] to-[#121110] text-white p-4 sm:p-5 rounded-2xl border border-[#C89565]/80 shadow-md sm:col-span-2 lg:col-span-1">
-              <span className="text-xs font-extrabold text-[#E0C9B1] block mb-1">
-                • {isAr ? 'الصافي للمالك' : 'Net Amount for the Owner'}
-              </span>
-              <p className="text-xl sm:text-2xl font-black text-[#F3E5D8]">
-                {report.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-bold text-[#C89565]">{isAr ? 'ريال' : 'SAR'}</span>
-              </p>
+            <div className="relative overflow-hidden bg-gradient-to-br from-[#1d1d1f] via-[#2a2622] to-[#121110] text-white p-4 sm:p-5 rounded-2xl border border-[#C89565]/80 shadow-md sm:col-span-2 lg:col-span-1 group">
+              {/* Animated Light Ray Shimmer */}
+              <motion.div
+                animate={{
+                  x: ['-100%', '200%']
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: 'easeInOut'
+                }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-[#C89565]/25 to-transparent -skew-x-12 pointer-events-none"
+              />
+
+              {/* Glowing Bottom Ambient Light */}
+              <motion.div
+                animate={{
+                  opacity: [0.3, 0.7, 0.3],
+                  scale: [0.95, 1.1, 0.95]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: 'easeInOut'
+                }}
+                className="absolute -bottom-10 -right-10 w-32 h-32 bg-[#C89565]/30 rounded-full blur-xl pointer-events-none"
+              />
+
+              <div className="relative z-10">
+                <span className="text-xs font-extrabold text-[#E0C9B1] block mb-1">
+                  • {isAr ? 'الصافي للمالك' : 'Net Amount for the Owner'}
+                </span>
+                <p className="text-xl sm:text-2xl font-black text-[#F3E5D8]">
+                  {report.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-bold text-[#C89565]">{isAr ? 'ريال' : 'SAR'}</span>
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -210,16 +239,24 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
 
           {/* 3 Unit Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {(report.unitReports || []).map((u) => (
-              <div 
+            {(report.unitReports || []).map((u, index) => (
+              <motion.div 
                 key={u.id}
-                className="bg-[#FAF7F2] rounded-2xl p-4 sm:p-5 border border-[#EDE5DC] space-y-3.5 hover:border-[#B8865F] transition shadow-2xs"
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.35, delay: index * 0.1 }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                className="relative group bg-[#FAF7F2] rounded-2xl p-4 sm:p-5 border border-[#EDE5DC] space-y-3.5 hover:border-[#B8865F] transition-all shadow-2xs hover:shadow-lg overflow-hidden"
               >
+                {/* Subtle top glowing accent border on hover */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#B8865F] via-[#C89565] to-[#E0C9B1] opacity-0 group-hover:opacity-100 transition-opacity" />
+
                 <div className="flex items-center justify-between border-b border-[#EDE5DC] pb-2">
                   <span className="text-xs font-extrabold text-[#8B6F47] bg-[#B8865F]/15 px-2.5 py-0.5 rounded-full border border-[#C89565]/30">
                     {isAr ? `وحدة رقم ${u.unitNumber}` : `Unit #${u.unitNumber}`}
                   </span>
-                  <span className="text-xs font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200">
+                  <span className="text-xs font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200 shadow-2xs">
                     {u.occupancyRate}% {isAr ? 'إشغال' : 'Occupancy'}
                   </span>
                 </div>
@@ -249,7 +286,7 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
                     <span className="text-[#B8865F]">{u.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
