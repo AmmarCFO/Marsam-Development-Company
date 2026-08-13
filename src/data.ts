@@ -86,14 +86,16 @@ export const initialOperatingReports: OperatingReport[] = [
       en: "Marsam Real Estate Development Company"
     },
     
-    // Core Required Metrics (Updated as requested by User)
+    // Core Required Metrics
     occupancyRate: 38,
-    totalContracts: 14043.60, // Period Revenue
-    totalRevenue: 23783.99,   // Collected Revenue
+    totalContracts: 23379.34, // Revenue
+    totalRevenue: 23379.34,   // Revenue
+    avgMonthlyReturn: 7306.04,
+    directExpenses: 1292.92,
     operatorSharePercentage: 20,
-    operatorShareAmount: 2808.72,
+    operatorShareAmount: 4675.86,
     capitalExpenses: 0.00,
-    netToOwner: 11234.88,
+    netToOwner: 17410.55,
 
     // Segregated reporting for the 3 units
     unitReports: [
@@ -102,30 +104,30 @@ export const initialOperatingReports: OperatingReport[] = [
         unitNumber: "1",
         unitName: { ar: "استوديو (Studio)", en: "Studio" },
         occupancyRate: 32,
-        periodRevenue: 3500.00,
-        collectedRevenue: 5850.00,
-        operatorShare: 700.00,
-        netToOwner: 2800.00
+        periodRevenue: 3237.75,
+        collectedRevenue: 3237.75,
+        operatorShare: 647.55,
+        netToOwner: 2590.20
       },
       {
         id: "U2-2BR",
         unitNumber: "2",
         unitName: { ar: "غرفتان نوم (2BR)", en: "2 Bedrooms (2BR)" },
         occupancyRate: 39,
-        periodRevenue: 4843.60,
-        collectedRevenue: 8250.00,
-        operatorShare: 968.72,
-        netToOwner: 3874.88
+        periodRevenue: 8419.64,
+        collectedRevenue: 8419.64,
+        operatorShare: 1683.93,
+        netToOwner: 6735.71
       },
       {
         id: "U3-3BR",
         unitNumber: "3",
         unitName: { ar: "ثلاث غرف نوم (3BR)", en: "3 Bedrooms (3BR)" },
         occupancyRate: 42,
-        periodRevenue: 5700.00,
-        collectedRevenue: 9683.99,
-        operatorShare: 1140.00,
-        netToOwner: 4560.00
+        periodRevenue: 11721.95,
+        collectedRevenue: 11721.95,
+        operatorShare: 2344.39,
+        netToOwner: 9377.56
       }
     ],
 
@@ -165,14 +167,12 @@ export const initialOperatingReports: OperatingReport[] = [
       }
     ],
 
-    avgMonthlyReturn: 4388.62,
-    directExpenses: 1292.92,
     totalUnits: 3,
     occupiedUnits: 1,
     adr: 242,
     revPar: 90,
     revenueBreakdown: [
-      { category: { ar: "إيراد العقود المبرمة للوحدات", en: "Unit Rental Contracts Revenue" }, amount: 23783.99, percentage: 100 }
+      { category: { ar: "إيراد العقود المبرمة للوحدات", en: "Unit Rental Contracts Revenue" }, amount: 23379.34, percentage: 100 }
     ],
     maintenanceCostsCovered: 1292.92,
     utilitiesCostCovered: 0,
@@ -181,8 +181,8 @@ export const initialOperatingReports: OperatingReport[] = [
     payoutDate: "2026-07-31",
     bankAccount: "",
     notes: {
-      ar: "تقرير أداء التشغيل لشركة مرسم للتطوير العقاري - فرع 55 (المدينة المنورة - بني حارثة). سجلت الوحدات نسبة إشغال 38%، بإيراد فترة 23,783.99 ريال، وإيراد محصل 14,043.60 ريال، وحصة مشغل 4,756.79 ريال، ومصاريف رأسمالية 0.00 ريال، وصافي عائد للمالك 17,734.27 ريال.",
-      en: "Certified operating performance report for Marsam Real Estate Development Company - Branch 55 (Madinah - Bani Harithah). Units achieved 38% occupancy rate, with SAR 23,783.99 period revenue, SAR 14,043.60 collected revenue, SAR 4,756.79 operator's share, SAR 0.00 capital expenditures, and SAR 17,734.27 net amount for the owner."
+      ar: "تقرير أداء التشغيل لشركة مرسم للتطوير العقاري - فرع ٥٥ (المدينة المنورة - بني حارثة). سجلت الوحدات الـ ٣ نسبة إشغال ٣٨٪، بإيراد قدره ٢٣,٣٧٩٫٣٤ ريال، ومتوسط عائد شهري ٧,٣٠٦٫٠٤ ريال، ومصاريف مباشرة ١,٢٩٢٫٩٢ ريال، وحصة مشغل ٤,٦٧٥٫٨٦ ريال، ومصاريف رأسمالية ٠٫٠٠ ريال، وصافي عائد للعميل ١٧,٤١٠٫٥٥ ريال.",
+      en: "Certified operating performance report for Marsam Real Estate Development Company - Branch 55 (Madinah - Bani Harithah). The 3 units achieved 38% occupancy rate, with SAR 23,379.34 revenue, SAR 7,306.04 average monthly return, SAR 1,292.92 direct expenses, SAR 4,675.86 operator's share, SAR 0.00 capital expenditures, and SAR 17,410.55 net return to client."
     },
     additionalRemarks: []
   }

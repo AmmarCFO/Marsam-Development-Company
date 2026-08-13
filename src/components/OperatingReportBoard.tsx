@@ -204,23 +204,33 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
               </p>
             </div>
 
-            {/* 3. Period Revenue */}
+            {/* 2. Total Revenue */}
             <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EDE5DC]">
               <span className="text-xs font-bold text-stone-500 block mb-1">
-                • {isAr ? 'إيراد الفترة' : 'Period Revenue'}
-              </span>
-              <p className="text-lg sm:text-xl font-black text-[#1d1d1f]">
-                {(report.totalContracts || 14043.60).toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
-              </p>
-            </div>
-
-            {/* 4. Collected Revenue */}
-            <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EDE5DC]">
-              <span className="text-xs font-bold text-stone-500 block mb-1">
-                • {isAr ? 'الإيراد المحصل' : 'Collected Revenue'}
+                • {isAr ? 'الإيراد' : 'Revenue'}
               </span>
               <p className="text-lg sm:text-xl font-black text-emerald-700">
                 {report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
+              </p>
+            </div>
+
+            {/* 3. Average Monthly Return */}
+            <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EDE5DC]">
+              <span className="text-xs font-bold text-stone-500 block mb-1">
+                • {isAr ? 'متوسط العائد الشهري' : 'Average Monthly Return'}
+              </span>
+              <p className="text-lg sm:text-xl font-extrabold text-[#8B6F47]">
+                {(report.avgMonthlyReturn || 7306.04).toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
+              </p>
+            </div>
+
+            {/* 4. Direct Expenses */}
+            <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EDE5DC]">
+              <span className="text-xs font-bold text-stone-500 block mb-1">
+                • {isAr ? 'المصاريف المباشرة' : 'Direct Expenses'}
+              </span>
+              <p className="text-lg sm:text-xl font-extrabold text-rose-700">
+                {(report.directExpenses || 1292.92).toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
               </p>
             </div>
 
@@ -245,7 +255,7 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
             </div>
 
             {/* 7. Net Amount for the Owner */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-[#1d1d1f] via-[#2a2622] to-[#121110] text-white p-4 sm:p-5 rounded-2xl border border-[#C89565]/80 shadow-md sm:col-span-2 lg:col-span-3 group">
+            <div className="relative overflow-hidden bg-gradient-to-br from-[#1d1d1f] via-[#2a2622] to-[#121110] text-white p-4 sm:p-5 rounded-2xl border border-[#C89565]/80 shadow-md col-span-1 sm:col-span-2 lg:col-span-3 group">
               {/* Animated Light Ray Shimmer */}
               <motion.div
                 animate={{
@@ -341,13 +351,8 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
 
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between items-center py-1 border-b border-stone-200/60">
-                    <span className="text-stone-500 font-medium">• {isAr ? 'إيراد الفترة' : 'Period Revenue'}:</span>
-                    <span className="font-extrabold text-[#1d1d1f]">{u.periodRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</span>
-                  </div>
-
-                  <div className="flex justify-between items-center py-1 border-b border-stone-200/60">
-                    <span className="text-stone-500 font-medium">• {isAr ? 'الإيراد المحصل' : 'Collected Revenue'}:</span>
-                    <span className="font-extrabold text-emerald-700">{u.collectedRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</span>
+                    <span className="text-stone-500 font-medium">• {isAr ? 'الإيراد' : 'Revenue'}:</span>
+                    <span className="font-extrabold text-[#1d1d1f]">{u.collectedRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</span>
                   </div>
 
                   <div className="flex justify-between items-center py-1 border-b border-stone-200/60">
@@ -374,14 +379,13 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
 
           {/* Structured Segregated Comparison Table */}
           <div className="overflow-x-auto border border-[#EDE5DC] rounded-2xl touch-pan-x [-webkit-overflow-scrolling:touch]">
-            <table className="w-full text-xs text-right border-collapse min-w-[600px]">
+            <table className="w-full text-xs text-right border-collapse min-w-[500px]">
               <thead>
                 <tr className="bg-[#1d1d1f] text-white">
                   <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'الوحدة' : 'Unit'}</th>
                   <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'نوع الوحدة' : 'Unit Type'}</th>
                   <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'نسبة الإشغال' : 'Occupancy Rate'}</th>
-                  <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'إيراد الفترة' : 'Period Revenue'}</th>
-                  <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'الإيراد المحصل' : 'Collected Revenue'}</th>
+                  <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'الإيراد' : 'Revenue'}</th>
                   <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'حصة المشغل (20%)' : "Operator Share (20%)"}</th>
                   <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'الصافي للمالك' : 'Net to Owner'}</th>
                 </tr>
@@ -392,8 +396,7 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
                     <td className="p-3 font-extrabold text-[#1d1d1f]">#{u.unitNumber}</td>
                     <td className="p-3 font-bold text-[#8B6F47]">{u.unitName[isAr ? 'ar' : 'en']}</td>
                     <td className="p-3 font-extrabold text-emerald-700">{u.occupancyRate}%</td>
-                    <td className="p-3 font-extrabold text-[#1d1d1f]">{u.periodRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
-                    <td className="p-3 font-extrabold text-emerald-800">{u.collectedRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                    <td className="p-3 font-extrabold text-[#1d1d1f]">{u.collectedRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                     <td className="p-3 font-extrabold text-amber-900">{u.operatorShare.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                     <td className="p-3 font-black text-[#B8865F]">{u.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                   </tr>
@@ -402,8 +405,7 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
                   <td className="p-3">{isAr ? 'الإجمالي' : 'Total'}</td>
                   <td className="p-3">{isAr ? '٣ وحدات' : '3 Units'}</td>
                   <td className="p-3 text-emerald-400">{report.occupancyRate}% ({isAr ? 'المتوسط' : 'Avg'})</td>
-                  <td className="p-3 text-white">{(report.totalContracts || 14043.60).toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
-                  <td className="p-3 text-emerald-300">{report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                  <td className="p-3 text-white">{report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                   <td className="p-3 text-amber-300">{report.operatorShareAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                   <td className="p-3 text-[#E0C9B1]">{report.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                 </tr>

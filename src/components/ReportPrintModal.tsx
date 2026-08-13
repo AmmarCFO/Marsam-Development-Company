@@ -122,18 +122,22 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
                       <td className="p-2.5 sm:p-3 font-black text-emerald-700 text-left">{report.occupancyRate}%</td>
                     </tr>
                     <tr className="border-b border-[#EDE5DC]">
-                      <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'إيراد الفترة' : 'Period Revenue'}</td>
-                      <td className="p-2.5 sm:p-3 font-black text-left">{(report.totalContracts || 14043.60).toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
-                    </tr>
-                    <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
-                      <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'الإيراد المحصل' : 'Collected Revenue'}</td>
+                      <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'الإيراد' : 'Revenue'}</td>
                       <td className="p-2.5 sm:p-3 font-black text-emerald-800 text-left">{report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                     </tr>
+                    <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
+                      <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'متوسط العائد الشهري' : 'Average Monthly Return'}</td>
+                      <td className="p-2.5 sm:p-3 font-extrabold text-[#8B6F47] text-left">{(report.avgMonthlyReturn || 7306.04).toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                    </tr>
                     <tr className="border-b border-[#EDE5DC]">
+                      <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'المصاريف المباشرة' : 'Direct Expenses'}</td>
+                      <td className="p-2.5 sm:p-3 font-extrabold text-rose-700 text-left">{(report.directExpenses || 1292.92).toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                    </tr>
+                    <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
                       <td className="p-2.5 sm:p-3 font-bold">• {isAr ? `حصة المشغل (${report.operatorSharePercentage}%)` : `Operator's Share (${report.operatorSharePercentage}%)`}</td>
                       <td className="p-2.5 sm:p-3 font-black text-amber-900 text-left">{report.operatorShareAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                     </tr>
-                    <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
+                    <tr className="border-b border-[#EDE5DC]">
                       <td className="p-2.5 sm:p-3 font-bold">• {isAr ? 'المصاريف الرأسمالية' : 'Capital Expenditures'}</td>
                       <td className="p-2.5 sm:p-3 font-extrabold text-stone-600 text-left">{(report.capitalExpenses || 0).toFixed(2)} SAR</td>
                     </tr>
@@ -153,14 +157,14 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
                   {isAr ? 'تفاصيل أداء الوحدات السكنية الـ ٣' : '3 Units Segregated Performance'}
                 </h2>
                 <div className="overflow-x-auto border border-[#EDE5DC] rounded-xl touch-pan-x [-webkit-overflow-scrolling:touch]">
-                  <table className="w-full text-xs border-collapse border border-[#EDE5DC] text-center min-w-[500px]">
+                  <table className="w-full text-xs border-collapse border border-[#EDE5DC] text-center min-w-[450px]">
                     <thead>
                       <tr className="bg-[#FAF7F2] font-bold text-[#8B6F47]">
                         <th className="p-2 border border-[#EDE5DC]">{isAr ? 'الوحدة' : 'Unit'}</th>
                         <th className="p-2 border border-[#EDE5DC]">{isAr ? 'النوع' : 'Type'}</th>
                         <th className="p-2 border border-[#EDE5DC]">{isAr ? 'الإشغال' : 'Occupancy'}</th>
-                        <th className="p-2 border border-[#EDE5DC]">{isAr ? 'إيراد الفترة' : 'Period Rev'}</th>
-                        <th className="p-2 border border-[#EDE5DC]">{isAr ? 'المحصل' : 'Collected'}</th>
+                        <th className="p-2 border border-[#EDE5DC]">{isAr ? 'الإيراد' : 'Revenue'}</th>
+                        <th className="p-2 border border-[#EDE5DC]">{isAr ? 'حصة المشغل' : 'Operator Share'}</th>
                         <th className="p-2 border border-[#EDE5DC]">{isAr ? 'الصافي للمالك' : 'Net Owner'}</th>
                       </tr>
                     </thead>
@@ -170,8 +174,8 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
                           <td className="p-2 font-bold">#{u.unitNumber}</td>
                           <td className="p-2">{u.unitName[isAr ? 'ar' : 'en']}</td>
                           <td className="p-2 font-bold text-emerald-700">{u.occupancyRate}%</td>
-                          <td className="p-2">{u.periodRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                           <td className="p-2 font-bold">{u.collectedRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
+                          <td className="p-2 text-amber-900 font-medium">{u.operatorShare.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                           <td className="p-2 font-black text-[#B8865F]">{u.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                         </tr>
                       ))}
