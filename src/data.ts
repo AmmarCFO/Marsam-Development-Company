@@ -5,30 +5,30 @@ export const logoUrl = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/obje
 
 export const ownerProfile: OwnerProfile = {
   salutation: {
-    ar: "شركة",
-    en: "M/s"
+    ar: "الأستاذ",
+    en: "Mr."
   },
   name: {
-    ar: "مرسم للتطوير العقاري",
-    en: "Marsam Real Estate Development Company"
+    ar: "عبدالرحمن بن عبدالعزيز التركي",
+    en: "Abdulrahman bin Abdulaziz Al-Turki"
   },
-  ownerCode: "OWNER-MARSAM-2026-055",
-  email: "info@marsamdev.com",
+  ownerCode: "OWNER-ALTURKI-2026-056",
+  email: "abdulrahman.alturki@gmail.com",
   phone: "+966 50 123 4567",
   contractDate: "2026-04-25",
   totalBranches: 1,
-  totalUnits: 3,
-  cumulativeEarnings: 17734.27
+  totalUnits: 2,
+  cumulativeEarnings: 11967.76
 };
 
 export const branchesList: BranchDetails[] = [
   {
-    id: "sahman-55",
-    branchNumber: "55",
-    fullCode: "MTH-MED-55",
+    id: "sahman-56",
+    branchNumber: "56",
+    fullCode: "MTH-MED-56",
     name: {
-      ar: "فرع رقم ٥٥: بني حارثة",
-      en: "Branch No. 55 — Bani Harithah"
+      ar: "فرع رقم ٥٦: بني حارثة",
+      en: "Branch No. 56 — Bani Harithah"
     },
     location: {
       ar: "المدينة المنورة - بني حارثة",
@@ -47,11 +47,10 @@ export const branchesList: BranchDetails[] = [
       en: "Bani Harithah District, Madinah, Kingdom of Saudi Arabia"
     },
     photos: IMAGES.all,
-    totalUnits: 3,
+    totalUnits: 2,
     unitBreakdown: [
-      { type: { ar: "استوديو", en: "Studio" }, count: 1, avgMonthlyRate: "3,800 SAR" },
-      { type: { ar: "شقة غرفتين نوم", en: "2 bedroom apartment" }, count: 1, avgMonthlyRate: "4,500 SAR" },
-      { type: { ar: "شقة ثلاث غرف نوم", en: "3 bedroom apartment" }, count: 1, avgMonthlyRate: "4,865.86 SAR" }
+      { type: { ar: "استوديو", en: "Studio" }, count: 1, avgMonthlyRate: "3,237.75 SAR" },
+      { type: { ar: "شقة ثلاث غرف نوم", en: "3 bedroom apartment" }, count: 1, avgMonthlyRate: "11,721.95 SAR" }
     ],
     contactPhone: "+966 56 208 9171"
   }
@@ -59,8 +58,8 @@ export const branchesList: BranchDetails[] = [
 
 export const initialOperatingReports: OperatingReport[] = [
   {
-    id: "REP-55-01",
-    reportNumber: "55",
+    id: "REP-56-01",
+    reportNumber: "56",
     periodKey: "2026-Q2-Q3",
     periodName: {
       ar: "٢٥ أبريل ٢٠٢٦ - ٣١ يوليو ٢٠٢٦",
@@ -72,32 +71,32 @@ export const initialOperatingReports: OperatingReport[] = [
     },
     quarter: "25 Apr 2026 - 31 Jul 2026",
     year: 2026,
-    branchId: "sahman-55",
+    branchId: "sahman-56",
     branchName: {
-      ar: "فرع ٥٥: المدينة المنورة - بني حارثة",
-      en: "Branch 55: Madinah - Bani Harithah"
+      ar: "فرع ٥٦: المدينة المنورة - بني حارثة",
+      en: "Branch 56: Madinah - Bani Harithah"
     },
     tagline: {
       ar: "تقرير أداء التشغيل المعتمد",
       en: "Certified Operating Performance Report"
     },
     clientName: {
-      ar: "شركة مرسم للتطوير العقاري",
-      en: "Marsam Real Estate Development Company"
+      ar: "عبدالرحمن بن عبدالعزيز التركي",
+      en: "Abdulrahman bin Abdulaziz Al-Turki"
     },
     
     // Core Required Metrics
     occupancyRate: 38,
-    totalContracts: 23379.34, // Revenue
-    totalRevenue: 23379.34,   // Revenue
-    avgMonthlyReturn: 7306.04,
+    totalContracts: 14959.70, // Revenue
+    totalRevenue: 14959.70,   // Revenue
+    avgMonthlyReturn: 4674.91,
     directExpenses: 1292.92,
     operatorSharePercentage: 20,
-    operatorShareAmount: 4675.86,
+    operatorShareAmount: 2991.94,
     capitalExpenses: 0.00,
-    netToOwner: 17410.55,
+    netToOwner: 11967.76,
 
-    // Segregated reporting for the 3 units
+    // Segregated reporting for the 2 units (3BR & Studio)
     unitReports: [
       {
         id: "U1-STUDIO",
@@ -110,20 +109,10 @@ export const initialOperatingReports: OperatingReport[] = [
         netToOwner: 2590.20
       },
       {
-        id: "U2-2BR",
+        id: "U2-3BR",
         unitNumber: "2",
-        unitName: { ar: "غرفتان نوم (2BR)", en: "2 Bedrooms (2BR)" },
-        occupancyRate: 39,
-        periodRevenue: 8419.64,
-        collectedRevenue: 8419.64,
-        operatorShare: 1683.93,
-        netToOwner: 6735.71
-      },
-      {
-        id: "U3-3BR",
-        unitNumber: "3",
         unitName: { ar: "ثلاث غرف نوم (3BR)", en: "3 Bedrooms (3BR)" },
-        occupancyRate: 42,
+        occupancyRate: 44,
         periodRevenue: 11721.95,
         collectedRevenue: 11721.95,
         operatorShare: 2344.39,
@@ -139,20 +128,20 @@ export const initialOperatingReports: OperatingReport[] = [
         occupancyRate: 13,
         studioRate: 0,
         twoBedRate: 0,
-        threeBedRate: 39
+        threeBedRate: 26
       },
       {
         monthKey: "2026-05",
         monthName: { ar: "مايو ٢٠٢٦", en: "May 2026" },
-        occupancyRate: 35.7,
+        occupancyRate: 36,
         studioRate: 32,
-        twoBedRate: 35,
+        twoBedRate: 0,
         threeBedRate: 40
       },
       {
         monthKey: "2026-06",
         monthName: { ar: "يونيو ٢٠٢٦", en: "June 2026" },
-        occupancyRate: 13.3,
+        occupancyRate: 20,
         studioRate: 34,
         twoBedRate: 0,
         threeBedRate: 6
@@ -160,29 +149,29 @@ export const initialOperatingReports: OperatingReport[] = [
       {
         monthKey: "2026-07",
         monthName: { ar: "يوليو ٢٠٢٦", en: "July 2026" },
-        occupancyRate: 67.3,
+        occupancyRate: 68,
         studioRate: 35,
-        twoBedRate: 87,
-        threeBedRate: 80
+        twoBedRate: 0,
+        threeBedRate: 100
       }
     ],
 
-    totalUnits: 3,
+    totalUnits: 2,
     occupiedUnits: 1,
     adr: 242,
     revPar: 90,
     revenueBreakdown: [
-      { category: { ar: "إيراد العقود المبرمة للوحدات", en: "Unit Rental Contracts Revenue" }, amount: 23379.34, percentage: 100 }
+      { category: { ar: "إيراد العقود المبرمة للوحدات", en: "Unit Rental Contracts Revenue" }, amount: 14959.70, percentage: 100 }
     ],
     maintenanceCostsCovered: 1292.92,
     utilitiesCostCovered: 0,
     payoutStatus: "transferred",
-    payoutRef: "TXN-20260731-MTH55",
+    payoutRef: "TXN-20260731-MTH56",
     payoutDate: "2026-07-31",
     bankAccount: "",
     notes: {
-      ar: "تقرير أداء التشغيل لشركة مرسم للتطوير العقاري - فرع ٥٥ (المدينة المنورة - بني حارثة). سجلت الوحدات الـ ٣ نسبة إشغال ٣٨٪، بإيراد قدره ٢٣,٣٧٩٫٣٤ ريال، ومتوسط عائد شهري ٧,٣٠٦٫٠٤ ريال، ومصاريف مباشرة ١,٢٩٢٫٩٢ ريال، وحصة مشغل ٤,٦٧٥٫٨٦ ريال، ومصاريف رأسمالية ٠٫٠٠ ريال، وصافي عائد للعميل ١٧,٤١٠٫٥٥ ريال.",
-      en: "Certified operating performance report for Marsam Real Estate Development Company - Branch 55 (Madinah - Bani Harithah). The 3 units achieved 38% occupancy rate, with SAR 23,379.34 revenue, SAR 7,306.04 average monthly return, SAR 1,292.92 direct expenses, SAR 4,675.86 operator's share, SAR 0.00 capital expenditures, and SAR 17,410.55 net return to client."
+      ar: "تقرير أداء التشغيل لفرع ٥٦ (المدينة المنورة - بني حارثة) للعميل عبدالرحمن بن عبدالعزيز التركي. سجلت الوحدتان (استوديو وثلاث غرف) نسبة إشغال متوسطة ٣٨٪، بإيراد إجمالي قدره ١٤,٩٥٩٫٧٠ ريال، وحصة مشغل (٢٠٪) قدرها ٢,٩٩١٫٩٤ ريال، ومصاريف رأسمالية ٠٫٠٠ ريال، وصافي عائد للعميل ١١,٩٦٧٫٧٦ ريال.",
+      en: "Certified operating performance report for Branch 56 (Madinah - Bani Harithah) for client Abdulrahman bin Abdulaziz Al-Turki. The 2 units (Studio and 3BR) achieved 38% occupancy rate, with SAR 14,959.70 revenue, SAR 2,991.94 operator's share (20%), SAR 0.00 capital expenditures, and SAR 11,967.76 net return to client."
     },
     additionalRemarks: []
   }

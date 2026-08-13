@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Maximize2, X, ChevronRight, ChevronLeft, Play, Pause, Sparkles, Building2, MapPin } from 'lucide-react';
+import { Maximize2, Minimize2, X, ChevronRight, ChevronLeft, Play, Pause, Sparkles, Building2, MapPin } from 'lucide-react';
 import { BranchDetails } from '../types';
 import { handleImageError, preloadImages } from '../constants/images';
 
@@ -32,6 +32,21 @@ export const BranchOverview: React.FC<BranchOverviewProps> = ({
   useEffect(() => {
     preloadImages(photos);
   }, [photos]);
+
+  // Handle Keyboard Escape key to exit photo lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setLightboxOpen(false);
+      }
+    };
+    if (lightboxOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [lightboxOpen]);
 
   // Automatic 3.5-second slideshow timer
   useEffect(() => {
@@ -226,28 +241,52 @@ export const BranchOverview: React.FC<BranchOverviewProps> = ({
         </div>
       </div>
 
-      {/* Lightbox Fullscreen Modal */}
+      {/* Lightbox Fullscreen Modal with Explicit Cross / Exit Buttons */}
       <AnimatePresence>
         {lightboxOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6"
+            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-2 sm:p-6"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setLightboxOpen(false);
+            }}
           >
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setLightboxOpen(false)}
-              className="absolute top-5 right-5 text-white hover:text-[#C89565] w-11 h-11 rounded-full bg-white/10 flex items-center justify-center transition z-50 border border-white/20"
-            >
-              <X className="w-6 h-6" />
-            </motion.button>
+            {/* Top Fixed Floating Controls Bar */}
+            <div className="absolute top-3 left-3 right-3 sm:top-5 sm:left-6 sm:right-6 z-50 flex items-center justify-between gap-2 pointer-events-auto">
+              {/* Secondary Cross Button for Left Side */}
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setLightboxOpen(false)}
+                className="inline-flex items-center gap-1.5 bg-black/80 hover:bg-black text-white px-3 py-2 rounded-full text-xs font-bold border border-white/30 shadow-lg backdrop-blur-md transition"
+                title={isAr ? 'إغلاق المعرض' : 'Close Gallery'}
+              >
+                <X className="w-5 h-5 text-stone-200" />
+                <span className="hidden sm:inline">{isAr ? 'إغلاق' : 'Close'}</span>
+              </motion.button>
 
+              <span className="text-xs font-mono font-bold bg-black/80 text-[#E0C9B1] px-3.5 py-1.5 rounded-full border border-white/20 backdrop-blur-md">
+                {activePhotoIndex + 1} / {photos.length}
+              </span>
+
+              {/* Primary High-Visibility Exit / Return to Report Cross Button */}
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setLightboxOpen(false)}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-amber-700 hover:from-red-700 hover:to-amber-800 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-black shadow-xl border border-white/30 backdrop-blur-md transition"
+              >
+                <X className="w-5 h-5 text-white" />
+                <span>{isAr ? 'إغلاق والعودة للتقرير' : 'Exit & Return to Report'}</span>
+              </motion.button>
+            </div>
+
+            {/* Main Preview Container */}
             <motion.div
               initial={{ scale: 0.92, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.92, opacity: 0 }}
-              className="relative max-w-6xl w-full aspect-16/10 rounded-2xl overflow-hidden border border-white/20 shadow-2xl bg-black"
+              className="relative max-w-6xl w-full aspect-16/10 rounded-2xl overflow-hidden border border-white/20 shadow-2xl bg-black mt-12 sm:mt-10"
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
@@ -262,25 +301,32 @@ export const BranchOverview: React.FC<BranchOverviewProps> = ({
 
               <button
                 onClick={handlePrevPhoto}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black text-white w-12 h-12 rounded-full backdrop-blur-md transition flex items-center justify-center border border-white/20 z-10"
+                className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black text-white w-10 h-10 sm:w-12 sm:h-12 rounded-full backdrop-blur-md transition flex items-center justify-center border border-white/20 z-10"
               >
-                <ChevronLeft className="w-7 h-7" />
+                <ChevronLeft className="w-6 h-6 sm:w-7 sm:h-7" />
               </button>
               <button
                 onClick={handleNextPhoto}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black text-white w-12 h-12 rounded-full backdrop-blur-md transition flex items-center justify-center border border-white/20 z-10"
+                className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black text-white w-10 h-10 sm:w-12 sm:h-12 rounded-full backdrop-blur-md transition flex items-center justify-center border border-white/20 z-10"
               >
-                <ChevronRight className="w-7 h-7" />
+                <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7" />
               </button>
 
-              <div className="absolute bottom-4 left-4 right-4 bg-black/80 backdrop-blur-md p-4 rounded-xl text-white flex items-center justify-between text-xs sm:text-sm border border-white/10">
+              {/* Bottom Info & Exit Bar */}
+              <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 bg-black/85 backdrop-blur-md p-3 sm:p-4 rounded-xl text-white flex items-center justify-between gap-2 text-xs sm:text-sm border border-white/15">
                 <div>
-                  <p className="font-extrabold text-[#E0C9B1]">{selectedBranch.name[isAr ? 'ar' : 'en']}</p>
-                  <p className="text-xs text-stone-300">{selectedBranch.location[isAr ? 'ar' : 'en']}</p>
+                  <p className="font-extrabold text-[#E0C9B1] text-xs sm:text-sm">{selectedBranch.name[isAr ? 'ar' : 'en']}</p>
+                  <p className="text-[11px] sm:text-xs text-stone-300">{selectedBranch.location[isAr ? 'ar' : 'en']}</p>
                 </div>
-                <span className="font-mono text-xs bg-white/10 px-3 py-1 rounded-lg border border-white/10">
-                  {activePhotoIndex + 1} / {photos.length}
-                </span>
+                
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setLightboxOpen(false)}
+                  className="inline-flex items-center gap-1.5 bg-white/15 hover:bg-white/25 text-white px-3 py-1.5 rounded-lg text-xs font-bold border border-white/20 transition"
+                >
+                  <X className="w-4 h-4 text-red-400" />
+                  <span>{isAr ? 'تصغير / العودة' : 'Minimize / Return'}</span>
+                </motion.button>
               </div>
             </motion.div>
           </motion.div>
