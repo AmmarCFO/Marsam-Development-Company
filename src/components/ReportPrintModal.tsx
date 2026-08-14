@@ -18,8 +18,8 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
 }) => {
   if (!report) return null;
 
-  const clientName = report.clientName ? report.clientName[isAr ? 'ar' : 'en'] : (isAr ? 'عبدالرحمن بن عبدالعزيز التركي' : 'Abdulrahman bin Abdulaziz Al-Turki');
-  const branchNumber = report.branchNumber || '56';
+  const clientName = report.clientName ? report.clientName[isAr ? 'ar' : 'en'] : (isAr ? 'شركة مرسم للتطوير العقاري' : 'Marsam Real Estate Development Company');
+  const branchNumber = report.branchNumber || '55';
   const branchLocation = isAr ? 'المدينة المنورة - بني حارثة' : 'Madinah - Bani Harithah';
 
   return (
@@ -73,12 +73,10 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
                     {isAr ? 'تقرير الأداء التشغيلي (١)' : 'Operational Performance Report (1)'}
                   </h1>
                   <p className="text-[11px] sm:text-xs text-[#8B6F47] font-bold">
-                    {isAr ? `الفرع: مثوى ${branchNumber} • المدينة المنورة - بني حارثة` : `Branch: Mathwaa ${branchNumber} • Madinah - Bani Harithah`}
+                    {isAr ? 'الفرع: مثوى ٥٥ • المدينة المنورة - بني حارثة' : 'Branch: Mathwaa 55 • Madinah - Bani Harithah'}
                   </p>
                   <p className="text-[10px] sm:text-[11px] text-stone-600 font-semibold mt-0.5">
-                    {isAr 
-                      ? `عدد الوحدات: ${report.totalUnits || report.unitReports?.length || 2} (استوديو • شقة ثلاث غرف نوم)` 
-                      : `Number of Units: ${report.totalUnits || report.unitReports?.length || 2} units (Studio • 3 bedroom apartment)`}
+                    {isAr ? 'عدد الوحدات: ٣ وحدات (استوديو • شقة غرفتين نوم • شقة ثلاث غرف نوم)' : 'Number of Units: 3 units (Studio • 2 bedroom apartment • 3 bedroom apartment)'}
                   </p>
                 </div>
               </div>
@@ -87,7 +85,7 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
                   {isAr ? 'تم تحويل الصافي' : 'Transferred'}
                 </span>
                 <p className="text-[9px] sm:text-[10px] text-stone-400 font-mono mt-1 hidden sm:block">
-                  Ref: {report.payoutRef || 'TXN-20260731-MTH56'}
+                  Ref: {report.payoutRef || 'TXN-20260731-MTH55'}
                 </p>
               </div>
             </div>
@@ -156,9 +154,7 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
             {report.unitReports && (
               <div>
                 <h2 className="text-xs font-extrabold text-[#8B6F47] uppercase tracking-wider mb-2">
-                  {isAr 
-                    ? `تفاصيل أداء الوحدات السكنية (${report.totalUnits || report.unitReports?.length || 2})` 
-                    : `${report.totalUnits || report.unitReports?.length || 2} Units Segregated Performance`}
+                  {isAr ? 'تفاصيل أداء الوحدات السكنية الـ ٣' : '3 Units Segregated Performance'}
                 </h2>
                 <div className="overflow-x-auto border border-[#EDE5DC] rounded-xl touch-pan-x [-webkit-overflow-scrolling:touch]">
                   <table className="w-full text-xs border-collapse border border-[#EDE5DC] text-center min-w-[450px]">

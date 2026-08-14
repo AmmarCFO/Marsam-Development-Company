@@ -317,12 +317,12 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
               </div>
             </div>
             <span className="self-start sm:self-auto text-[11px] font-mono font-bold text-[#8B6F47] bg-[#FAF7F2] px-3 py-1 rounded-full border border-[#EDE5DC]">
-              {isAr ? `إجمالي المحفظة: ${report.totalUnits || report.unitReports?.length || 2} وحدات` : `${report.totalUnits || report.unitReports?.length || 2} Units Portfolio`}
+              {isAr ? 'إجمالي المحفظة: ٣ وحدات' : '3 Units Portfolio'}
             </span>
           </div>
 
-          {/* Unit Cards Grid */}
-          <div className={`grid grid-cols-1 ${(report.unitReports?.length || 2) === 2 ? 'md:grid-cols-2 max-w-4xl mx-auto' : 'md:grid-cols-3'} gap-4`}>
+          {/* 3 Unit Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {(report.unitReports || []).map((u, index) => (
               <motion.div 
                 key={u.id}
@@ -403,7 +403,7 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
                 ))}
                 <tr className="bg-[#1d1d1f] text-white font-black text-xs">
                   <td className="p-3">{isAr ? 'الإجمالي' : 'Total'}</td>
-                  <td className="p-3">{isAr ? `${report.totalUnits || report.unitReports?.length || 2} وحدات` : `${report.totalUnits || report.unitReports?.length || 2} Units`}</td>
+                  <td className="p-3">{isAr ? '٣ وحدات' : '3 Units'}</td>
                   <td className="p-3 text-emerald-400">{report.occupancyRate}% ({isAr ? 'المتوسط' : 'Avg'})</td>
                   <td className="p-3 text-white">{report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                   <td className="p-3 text-amber-300">{report.operatorShareAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
@@ -426,7 +426,7 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
                   {isAr ? 'مؤشر الإشغال (أبريل - يوليو 2026)' : 'Occupancy Trend (Apr to Jul 2026)'}
                 </h3>
                 <p className="text-xs text-stone-500">
-                  {isAr ? 'تطور الأداء الشهري المعتمد للوحدات المتاحة' : 'Monthly certified occupancy performance evolution across the 4 months'}
+                  {isAr ? 'تطور الأداء الشهري المعتمد للوحدات الـ ٣' : 'Monthly certified occupancy performance evolution across the 4 months'}
                 </p>
               </div>
             </div>
@@ -439,11 +439,11 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
                   {isAr ? 'تطور نسبة الإشغال الشهري (أبريل ٢٠٢٦ - يوليو ٢٠٢٦)' : 'Monthly Occupancy Rate Trend (April 2026 - July 2026)'}
                 </h4>
                 <p className="text-xs text-stone-500">
-                  {isAr ? 'مقارنة متوسط المحفظة مع أداء الوحدات (Studio & 3BR)' : 'Portfolio overall average vs Studio & 3BR performance'}
+                  {isAr ? 'مقارنة متوسط المحفظة مع أداء الوحدات الـ ٣ (Studio, 2BR, 3BR)' : 'Portfolio overall average vs Studio, 2BR & 3BR performance'}
                 </p>
               </div>
               <div className="text-xs font-bold text-[#8B6F47] bg-[#B8865F]/15 px-3 py-1 rounded-full border border-[#C89565]/30 self-start sm:self-auto">
-                {isAr ? 'متوسط الفترة: ٣٤.٢٪' : 'Period Average: 34.2%'}
+                {isAr ? 'متوسط الفترة: ٣٢.٣٪' : 'Period Average: 32.3%'}
               </div>
             </div>
 
@@ -489,6 +489,13 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
                   />
                   <Area 
                     type="monotone" 
+                    dataKey={isAr ? 'غرفتان نوم (2BR)' : '2BR'} 
+                    stroke="#3B82F6" 
+                    strokeWidth={2}
+                    fillOpacity={0} 
+                  />
+                  <Area 
+                    type="monotone" 
                     dataKey={isAr ? 'ثلاث غرف نوم (3BR)' : '3BR'} 
                     stroke="#8B5CF6" 
                     strokeWidth={2}
@@ -504,28 +511,33 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
                 <div key={m.monthKey} className="bg-white p-3 rounded-xl border border-[#EDE5DC] text-center shadow-2xs">
                   <span className="text-[11px] font-bold text-stone-500 block">
                     {m.monthName[isAr ? 'ar' : 'en']}
+                    {m.monthKey === '2026-04' && (
+                      <span className="text-amber-700 font-extrabold text-[10px] block">
+                        ({isAr ? '٦ أيام تشغيلية' : '6 Days Only'})
+                      </span>
+                    )}
                   </span>
                   <span className="text-base font-black text-[#B8865F] block mt-0.5">
                     {m.occupancyRate}%
                   </span>
                   <span className="text-[10px] text-stone-400 block mt-0.5 font-mono">
-                    S:{m.studioRate}% | 3BR:{m.threeBedRate}%
+                    S:{m.studioRate}% | 2BR:{m.twoBedRate}% | 3BR:{m.threeBedRate}%
                   </span>
                 </div>
               ))}
             </div>
 
-            {/* April Operational Note */}
-            <div className="bg-amber-50/90 border border-amber-200 rounded-xl p-3.5 flex items-start gap-2.5 text-xs text-amber-900 shadow-2xs mt-2">
-              <Info className="w-4.5 h-4.5 text-amber-600 flex-shrink-0 mt-0.5" />
+            {/* Note regarding April partial data */}
+            <div className="flex items-start gap-2.5 bg-[#FFFBEB] p-3.5 sm:p-4 rounded-xl border border-[#FCD34D]/70 text-amber-900 text-xs shadow-2xs mt-3">
+              <Info className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
               <div>
                 <span className="font-extrabold block text-amber-950 mb-0.5">
-                  {isAr ? 'تنويه بشأن أداء شهر أبريل ٢٠٢٦:' : 'Note regarding April 2026 performance:'}
+                  {isAr ? 'تنويه بشأن شهر أبريل:' : 'Note Regarding April Data:'}
                 </span>
-                <p className="text-[#6d4c22] leading-relaxed">
+                <p className="text-amber-800 leading-relaxed font-medium">
                   {isAr 
-                    ? 'يتضمن مؤشر نسبة الإشغال لشهر أبريل ٦ أيام عمل فقط (منذ انطلاق التشغيل بتاريخ ٢٥ أبريل ٢٠٢٦) وليس شهراً كاملاً، نظراً لبدء التقرير والتشغيل خلال الشهر.'
-                    : 'April occupancy indicators reflect only 6 operational days (since reporting/operations commenced on April 25, 2026) rather than a full month.'}
+                    ? 'يتضمن شهر أبريل ٦ أيام تشغيلية فقط وليس الشهر كاملاً، نظراً لبدء التقرير والتشغيل الفعلي خلال شهر أبريل ٢٠٢٦.'
+                    : 'April includes only 6 operational days rather than the full month, as actual operations and reporting commenced during April 2026.'}
                 </p>
               </div>
             </div>

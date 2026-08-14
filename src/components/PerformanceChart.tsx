@@ -4,7 +4,7 @@ import {
   ResponsiveContainer, ComposedChart, Line, Bar, XAxis, YAxis, Tooltip, 
   Legend, CartesianGrid, Area 
 } from 'recharts';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, Info } from 'lucide-react';
 import { OperatingReport } from '../types';
 
 interface PerformanceChartProps {
@@ -158,6 +158,21 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({ isAr, report
           </ResponsiveContainer>
         </motion.div>
       </AnimatePresence>
+
+      {/* Clarification Note Box regarding April partial data */}
+      <div className="flex items-start gap-2.5 bg-[#FFFBEB] p-3.5 sm:p-4 rounded-2xl border border-[#FCD34D]/70 text-amber-900 text-xs shadow-2xs mt-4">
+        <Info className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+        <div>
+          <span className="font-extrabold block text-amber-950 mb-0.5">
+            {isAr ? 'تنويه بشأن بيانات شهر أبريل:' : 'Note Regarding April Data:'}
+          </span>
+          <p className="text-amber-800 leading-relaxed font-medium">
+            {isAr 
+              ? 'يتضمن شهر أبريل ٦ أيام تشغيلية فقط وليس الشهر كاملاً، نظراً لبدء التقرير والتشغيل الفعلي خلال شهر أبريل ٢٠٢٦.'
+              : 'April includes only 6 operational days rather than the full month, as actual operations and reporting commenced mid-April 2026.'}
+          </p>
+        </div>
+      </div>
     </motion.div>
   );
 };
