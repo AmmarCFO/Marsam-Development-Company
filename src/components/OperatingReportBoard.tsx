@@ -356,7 +356,7 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
                   </div>
 
                   <div className="flex justify-between items-center py-1 border-b border-stone-200/60">
-                    <span className="text-stone-500 font-medium">• {isAr ? 'حصة المشغل (20%)' : "Operator's Share (20%)"}:</span>
+                    <span className="text-stone-500 font-medium">• {isAr ? `حصة المشغل (${report.operatorSharePercentage}%)` : `Operator's Share (${report.operatorSharePercentage}%)`}:</span>
                     <span className="font-extrabold text-amber-900">{u.operatorShare.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</span>
                   </div>
 
@@ -386,7 +386,7 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
                   <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'نوع الوحدة' : 'Unit Type'}</th>
                   <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'نسبة الإشغال' : 'Occupancy Rate'}</th>
                   <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'الإيراد' : 'Revenue'}</th>
-                  <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'حصة المشغل (20%)' : "Operator Share (20%)"}</th>
+                  <th className="p-3 font-bold border-b border-stone-800">{isAr ? `حصة المشغل (${report.operatorSharePercentage}%)` : `Operator Share (${report.operatorSharePercentage}%)`}</th>
                   <th className="p-3 font-bold border-b border-stone-800">{isAr ? 'الصافي للمالك' : 'Net to Owner'}</th>
                 </tr>
               </thead>

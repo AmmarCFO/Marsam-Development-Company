@@ -18,7 +18,7 @@ export const ownerProfile: OwnerProfile = {
   contractDate: "2026-04-25",
   totalBranches: 1,
   totalUnits: 3,
-  cumulativeEarnings: 17734.27
+  cumulativeEarnings: 17878.13
 };
 
 export const branchesList: BranchDetails[] = [
@@ -92,10 +92,10 @@ export const initialOperatingReports: OperatingReport[] = [
     totalRevenue: 23379.34,   // Revenue
     avgMonthlyReturn: 7306.04,
     directExpenses: 1292.92,
-    operatorSharePercentage: 20,
-    operatorShareAmount: 4675.86,
+    operatorSharePercentage: 18,
+    operatorShareAmount: 4208.28,
     capitalExpenses: 0.00,
-    netToOwner: 17410.55,
+    netToOwner: 17878.13,
 
     // Segregated reporting for the 3 units
     unitReports: [
@@ -106,8 +106,8 @@ export const initialOperatingReports: OperatingReport[] = [
         occupancyRate: 32,
         periodRevenue: 3237.75,
         collectedRevenue: 3237.75,
-        operatorShare: 647.55,
-        netToOwner: 2590.20
+        operatorShare: 582.79,
+        netToOwner: 2654.96
       },
       {
         id: "U2-2BR",
@@ -116,8 +116,8 @@ export const initialOperatingReports: OperatingReport[] = [
         occupancyRate: 39,
         periodRevenue: 8419.64,
         collectedRevenue: 8419.64,
-        operatorShare: 1683.93,
-        netToOwner: 6735.71
+        operatorShare: 1515.54,
+        netToOwner: 6904.10
       },
       {
         id: "U3-3BR",
@@ -126,8 +126,8 @@ export const initialOperatingReports: OperatingReport[] = [
         occupancyRate: 42,
         periodRevenue: 11721.95,
         collectedRevenue: 11721.95,
-        operatorShare: 2344.39,
-        netToOwner: 9377.56
+        operatorShare: 2109.95,
+        netToOwner: 9612.00
       }
     ],
 
@@ -181,8 +181,8 @@ export const initialOperatingReports: OperatingReport[] = [
     payoutDate: "2026-07-31",
     bankAccount: "",
     notes: {
-      ar: "تقرير أداء التشغيل لشركة مرسم للتطوير العقاري - فرع ٥٥ (المدينة المنورة - بني حارثة). سجلت الوحدات الـ ٣ نسبة إشغال ٣٨٪، بإيراد قدره ٢٣,٣٧٩٫٣٤ ريال، ومتوسط عائد شهري ٧,٣٠٦٫٠٤ ريال، ومصاريف مباشرة ١,٢٩٢٫٩٢ ريال، وحصة مشغل ٤,٦٧٥٫٨٦ ريال، ومصاريف رأسمالية ٠٫٠٠ ريال، وصافي عائد للعميل ١٧,٤١٠٫٥٥ ريال.",
-      en: "Certified operating performance report for Marsam Real Estate Development Company - Branch 55 (Madinah - Bani Harithah). The 3 units achieved 38% occupancy rate, with SAR 23,379.34 revenue, SAR 7,306.04 average monthly return, SAR 1,292.92 direct expenses, SAR 4,675.86 operator's share, SAR 0.00 capital expenditures, and SAR 17,410.55 net return to client."
+      ar: "تقرير أداء التشغيل لشركة مرسم للتطوير العقاري - فرع ٥٥ (المدينة المنورة - بني حارثة). سجلت الوحدات الـ ٣ نسبة إشغال ٣٨٪، بإيراد قدره ٢٣,٣٧٩٫٣٤ ريال، ومتوسط عائد شهري ٧,٣٠٦٫٠٤ ريال، ومصاريف مباشرة ١,٢٩٢٫٩٢ ريال، وحصة مشغل (١٨٪) ٤,٢٠٨٫٢٨ ريال، ومصاريف رأسمالية ٠٫٠٠ ريال، وصافي عائد للعميل ١٧,٨٧٨٫١٣ ريال.",
+      en: "Certified operating performance report for Marsam Real Estate Development Company - Branch 55 (Madinah - Bani Harithah). The 3 units achieved 38% occupancy rate, with SAR 23,379.34 revenue, SAR 7,306.04 average monthly return, SAR 1,292.92 direct expenses, SAR 4,208.28 operator's share (18%), SAR 0.00 capital expenditures, and SAR 17,878.13 net return to client."
     },
     additionalRemarks: []
   }
